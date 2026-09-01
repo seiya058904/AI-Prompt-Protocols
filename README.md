@@ -8,7 +8,7 @@
 
 A small, high-signal collection of plain-text Markdown documents for AI-assisted development. Each document is a complete, self-contained prompt — copy it, put it into your agent's context, and use it.
 
-The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The two English rule sets ship with Chinese translations under [`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/). Three workflow protocols are written in Chinese natively; the code-review and agent-init protocols are in English.
+The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The two English rule sets ship with Chinese translations under [`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/). The project-closeout protocol is written in Chinese natively; the UI workflow, code-review, and agent-init protocols are in English.
 
 ## Choose a Protocol
 
@@ -16,8 +16,8 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 | --- | --- | --- | --- |
 | [Codex Global Rules](#codex-global-rules) | Global behavioral rules for long-running Codex coding sessions | Standardizing a Codex-centric workflow | English · 中文译文 |
 | [Universal Coding Agent Global Rules](#universal-coding-agent-global-rules) | The same core rules, written tool-agnostic | Teams mixing agents (Codex, Claude Code, Cursor, …) | English · 中文译文 |
-| [UI Screenshot → Implementation Spec Protocol](#ui-screenshot--implementation-spec-protocol) | Turns a screenshot / mockup into a precise, executable UI implementation spec | Before implementation: analysis in, spec out | 中文 |
-| [UI Visual Fidelity Refinement Protocol](#ui-visual-fidelity-refinement-protocol) | Converges an implemented UI to the reference screenshot | After implementation: visual convergence phase | 中文 |
+| [UI Screenshot → Implementation Spec Protocol](#ui-screenshot--implementation-spec-protocol) | Turns a screenshot / mockup into a precise, executable UI implementation spec | Before implementation: analysis in, spec out | English |
+| [UI Visual Fidelity Refinement Protocol](#ui-visual-fidelity-refinement-protocol) | Converges an implemented UI to the reference screenshot | After implementation: visual convergence phase | English |
 | [Project Closeout Prompt](#project-closeout-prompt) | Lands finished work safely into the default branch and syncs it | End of a milestone, release, or handoff | 中文 |
 | [Expert Code Review Protocol](#expert-code-review-protocol) | High-signal code review: real, actionable, merge-relevant findings only | Pre-merge review of PRs / diffs | English |
 | [Universal Agent Init](#universal-agent-init) | Initializes or improves a repo's `AGENTS.md` / `CLAUDE.md` from repository evidence | Bootstrapping or reconciling agent instructions | English |
@@ -84,91 +84,100 @@ Within each bounded stage, run independent inspections or tool calls concurrentl
 
 ### UI Screenshot → Implementation Spec Protocol
 
-**What it does.** Turns a UI screenshot, design mockup, or page capture into a structured, executable UI implementation spec that another coding agent can build from — without re-seeing the screenshot.
+**What it does.** v2.0: converts one or more reference screenshots, mockups, or design images into a concise, structured, implementation-ready UI Implementation Specification — the smallest accurate visual model that explains the screenshot well enough to reproduce it. The agent's job is inspect → model → specify, never implement.
 
 **Why it works.**
 
-- **Three certainty levels.** Every spec item is labeled OBSERVED (directly visible), ESTIMATED (approximate, marked with `~`), or INFERRED (reasonable guess), so the reader always knows what is fact and what is assumption.
-- **Anti-hallucination rules.** If something cannot be determined, the spec must say `Unknown` or `Inferred — confidence: low` — never fill it in from memory or from knowledge of other products.
-- **Global before local.** The analysis is ordered: canvas and viewport → spatial map → section hierarchy → layout architecture → design tokens → typography → components — so nothing is missed and hierarchy is explicit.
-- **Relationships over coordinates.** Elements are described by their relationship to containers and neighbors, not by pretending pixels are precise.
-- **Explicit handoff outputs.** The required output format ends with an Uncertainty Register and Implementation Directives, so the implementing agent knows what is uncertain and what must be built.
+- **Source-of-truth hierarchy.** Evidence is ranked: explicit user requirements → screenshots → cross-screenshot consistency → verified project assets / tokens → spec estimates → inference; when lower-priority evidence conflicts with higher-priority evidence, the higher priority wins.
+- **Four evidence labels.** Every non-trivial statement is OBSERVED, ESTIMATED (with a structured `Estimated: ~240px / Plausible range: 232–248px / Confidence: high` format), INFERRED, or UNKNOWN — do not disguise uncertainty as precision.
+- **Anti-hallucination rules.** An explicit do-not-invent list (text, menus, logos, fonts, animations, responsive layouts, tokens), and recognizable products never override the supplied screenshots.
+- **Global before local.** An 11-step analysis order: source/canvas → composition → major regions → layout relationships → design system → component patterns → exact content → assets → interaction clues → responsive evidence → implementation-critical constraints.
+- **Relationships over coordinates.** Layout is described by container relationships, ratios, and spacing rhythm, with a preference for a small spacing system over dozens of isolated measurements.
+- **Priority and handoff.** Requirements are classed CRITICAL / IMPORTANT / COSMETIC, and the output ends with an Uncertainty Register and Implementation Directives so implementers never polish cosmetics while critical mismatches remain.
 
 **Best for.** Screenshot reconstruction, design-to-code handoff, and any task where the implementer should not re-guess the visual design.
 
 **Works with.** Output is consumed by Codex, Claude Code, Cursor, Gemini CLI, or similar coding agents.
 
-**Read.** [ui-screenshot-to-implementation-spec.md](ui-workflows/ui-screenshot-to-implementation-spec.md)（中文原文）
+**Read.** [ui-screenshot-to-implementation-spec.md](ui-workflows/ui-screenshot-to-implementation-spec.md)（英文原文）
 
 <details>
 <summary>Preview</summary>
 
-```text
-必须明确区分以下三类信息：
-
+````text
 ### OBSERVED
-
-可以直接从截图确认的事实。
+Directly visible or verifiable from the supplied material.
 
 ### ESTIMATED
+Visually measurable only approximately.
 
-可以从截图合理估计，但无法直接获得精确值。
+Format important estimates as:
 
-使用 `~` 表示估值。
-
-例如：
-
-`~24px`
-
-而不是伪装成：
-
-`24px`
+```text
+Estimated: ~240px
+Plausible range: 232–248px
+Confidence: high
+```
 
 ### INFERRED
+Not directly shown, but a reasonable conclusion from the visible structure or existing verified project context.
 
-截图没有直接展示，但根据 UI 结构进行的合理推断。
+Format:
 
-所有 INFERRED 内容必须明确标记。
-
-绝不能把推测写成截图事实。
+```text
+Inferred: sidebar likely collapses at narrow widths
+Confidence: medium
 ```
+
+### UNKNOWN
+Not supported strongly enough to estimate or infer safely.
+
+Do not disguise uncertainty as precision.
+````
 
 </details>
 
 ### UI Visual Fidelity Refinement Protocol
 
-**What it does.** After a page is implemented, runs a render → screenshot → compare → fix loop against the reference screenshot until the remaining visual differences are small enough that further changes stop paying off.
+**What it does.** v2.0: repeatedly compares the actual browser render with reference screenshots, identifies the highest-impact differences, corrects their root causes, and stops only when remaining differences are low-impact or not reasonably reducible.
 
 **Why it works.**
 
-- **Render is the evidence.** The protocol forbids judging by code ("CSS is set to 24px, so the spacing must be right") — every judgment is based on a real browser render: **Implementation is hypothesis. Rendered screenshot is evidence.**
-- **Pinned comparison environment.** Fonts, loading, and rendering conditions are pinned (for example, wait for fonts before taking screenshots) so comparisons are apples-to-apples.
-- **Classified differences.** Every found difference is labeled STRUCTURE / GEOMETRY / TYPOGRAPHY / COLOR / SURFACE / ASSET before any code changes.
-- **Preserve existing functionality.** This is a visual-refinement task, not an architecture rewrite: rewriting, large refactors, and business/API changes are explicitly forbidden.
-- **Proven convergence.** The loop stops only when a real difference list shows convergence, backed by actual screenshots.
+- **Render is the evidence.** The protocol's core rule is "The implementation is a hypothesis. The browser render is evidence" — correctness is judged from the rendered page, never from CSS values or DOM structure in isolation.
+- **Deterministic environment, baseline first.** Viewport, zoom, DPR, route, scroll, state, and font/asset readiness are pinned, and a baseline render with a ranked difference inventory is captured before any change — do not begin by randomly editing CSS.
+- **Global before local tiers.** Comparison runs Tier 1 Structure → Tier 2 Major Geometry → Tier 3 Typography → Tier 4 Color / Surface → Tier 5 Component Detail → Tier 6 Micro Polish; micro polish is off-limits while higher tiers are wrong.
+- **Visual severity and acceptance gate.** Differences are graded V0–V3 (visual-specific, not bug priority); each change cluster is classified IMPROVED / NEUTRAL / REGRESSED and rejected if it regresses a higher-priority region.
+- **Root cause first.** Shared causes (container width, tokens, inherited styles, breakpoints) are inspected before patching symptoms; one coherent hypothesis per change cluster, no compensating hacks.
+- **Explicit stop conditions.** The loop stops only when V0 = 0 and V1 = 0, after a fresh final comparison and a documented Remaining Difference Register.
 
 **Best for.** The visual convergence phase after a UI has been implemented from a spec.
 
 **Works with.** UI implementation agents: Codex, Claude Code, Cursor, and similar.
 
-**Read.** [ui-visual-fidelity-refinement.md](ui-workflows/ui-visual-fidelity-refinement.md)（中文原文）
+**Read.** [ui-visual-fidelity-refinement.md](ui-workflows/ui-visual-fidelity-refinement.md)（英文原文）
 
 <details>
 <summary>Preview</summary>
 
 ```text
-任何视觉判断都必须以真实 Browser Render 为依据。
+The implementation is a hypothesis.
+The browser render is evidence.
 
-禁止：
-
-> “CSS 已经设置为 24px，所以间距应该正确。”
-
-必须：
-
-> 截图确认真实渲染中的视觉间距是否与参考图一致。
-
-**Implementation is hypothesis.  
-Rendered screenshot is evidence.**
+CAPTURE / OBSERVE
+↓
+COMPARE
+↓
+RANK DIFFERENCES
+↓
+IDENTIFY ROOT CAUSE
+↓
+PATCH ONE COHERENT CLUSTER
+↓
+RENDER AGAIN
+↓
+ACCEPT / ADJUST / REVERT
+↓
+REPEAT
 ```
 
 </details>

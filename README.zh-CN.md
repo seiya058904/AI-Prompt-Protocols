@@ -8,7 +8,7 @@
 
 本仓库是一份小而精的纯文本 Markdown 提示词集合，服务于 AI 辅助开发。每份文档都是完整、自洽的提示词——复制它、放进你的代理上下文、直接使用。
 
-本页是 [README.md](README.md) 的中文镜像，信息架构、锚点与链接结构保持一致。两份英文规则附带中文译文（[`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/)）；三份工作流协议本身即以中文撰写，代码审查与代理初始化两份协议为英文。
+本页是 [README.md](README.md) 的中文镜像，信息架构、锚点与链接结构保持一致。两份英文规则附带中文译文（[`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/)）；收工协议本身即以中文撰写，UI 工作流、代码审查与代理初始化协议均为英文。
 
 ## 协议选择（Choose a Protocol）
 
@@ -16,8 +16,8 @@
 | --- | --- | --- | --- |
 | [Codex Global Rules](#codex-global-rules) | 面向长时间 Codex 编码会话的全局行为规则 | 统一 Codex 工作流基线 | English · 中文译文 |
 | [Universal Coding Agent Global Rules](#universal-coding-agent-global-rules) | 同一套核心规则的工具无关版本 | 混合使用多种代理的团队（Codex、Claude Code、Cursor 等） | English · 中文译文 |
-| [UI Screenshot → Implementation Spec Protocol](#ui-screenshot--implementation-spec-protocol) | 将截图 / 设计稿转化为精确、可执行的 UI 实现规格 | 实现之前：先分析、后输出规格 | 中文 |
-| [UI Visual Fidelity Refinement Protocol](#ui-visual-fidelity-refinement-protocol) | 通过「渲染 → 对比 → 修复」闭环让实现向参考截图收敛 | 实现之后：视觉收敛阶段 | 中文 |
+| [UI Screenshot → Implementation Spec Protocol](#ui-screenshot--implementation-spec-protocol) | 将截图 / 设计稿转化为精确、可执行的 UI 实现规格 | 实现之前：先分析、后输出规格 | English |
+| [UI Visual Fidelity Refinement Protocol](#ui-visual-fidelity-refinement-protocol) | 通过「渲染 → 对比 → 修复」闭环让实现向参考截图收敛 | 实现之后：视觉收敛阶段 | English |
 | [Project Closeout Prompt](#project-closeout-prompt) | 将本轮成果安全收敛进默认分支并同步远端 | 里程碑结束、发布或交接时 | 中文 |
 | [Expert Code Review Protocol](#expert-code-review-protocol) | 高信号代码审查：只报告真实、可操作、与合并相关的发现 | 合并前审查 PR / diff | English |
 | [Universal Agent Init](#universal-agent-init) | 依据仓库证据初始化或改进 `AGENTS.md` / `CLAUDE.md` | 初始化或梳理代理指令 | English |
@@ -88,95 +88,104 @@
 
 ### UI Screenshot → Implementation Spec Protocol
 
-**UI 截图 → 实现规格协议。**（中文原文）
+**UI 截图 → 实现规格协议 v2.0。**（英文原文）
 
-**它做什么。** 将 UI 截图、设计稿或页面截图，转化为一份结构化、可执行的 UI 实现规格，让另一个编码代理无需再看截图即可据此实现页面。
+**它做什么。** v2.0：将一张或多张参考截图 / 设计稿转化为一份简洁、结构化、可直接实现的 UI Implementation Specification——构建能解释截图的最小精确视觉模型，足以据此复现页面。代理的职责是「检查 → 建模 → 输出规格」，绝不直接实现。
 
 **为什么有效。**
 
-- **三层确定性标注。** 规格中的每一项都标注为 OBSERVED（可直接确认的事实）、ESTIMATED（近似值，用 `~` 标记）或 INFERRED（合理推断），读者始终清楚哪些是事实、哪些是推测。
-- **反幻觉规则。** 无法确定时必须写 `Unknown` 或 `Inferred — confidence: low`——绝不根据记忆或对其他产品的印象补全。
-- **先全局后局部。** 分析顺序为：画布与视口 → 空间地图 → 区块层级 → 布局架构 → 设计 Token → 排版 → 组件，避免遗漏、层级清晰。
-- **关系优先于坐标。** 用元素与容器、相邻元素之间的关系来描述，而不是假装像素值精确。
-- **明确的交接产物。** 输出格式以 Uncertainty Register（不确定项登记表）和 Implementation Directives（实现指令）收尾，实现方清楚哪些不确定、哪些必须做。
+- **事实来源层级。** 证据按优先级排序：显式用户需求 → 截图 → 多截图一致证据 → 已验证的项目资产 / Token → 规格估算 → 推断；低优先级证据与高优先级冲突时，以高优先级为准。
+- **四类证据标签。** 每条非平凡陈述标注 OBSERVED、ESTIMATED（结构化格式 `Estimated: ~240px / Plausible range: 232–248px / Confidence: high`）、INFERRED 或 UNKNOWN——不要把不确定性伪装成精确。
+- **反幻觉规则。** 明确的「禁止臆造」清单（文字、菜单、Logo、字体、动画、响应式布局、Token），且可识别的产品记忆永远不能凌驾于所提供的截图之上。
+- **先全局后局部。** 11 步分析顺序：来源与画布 → 全局构图 → 主要区域 → 布局关系 → 设计系统 → 组件模式 → 精确内容 → 资源 → 交互线索 → 响应式证据 → 实现关键约束。
+- **关系优先于坐标。** 用容器关系、比例与间距节奏描述布局，偏好小间距系统而非几十个孤立测量值。
+- **优先级与交接。** 需求按 CRITICAL / IMPORTANT / COSMETIC 分级，输出以 Uncertainty Register 与 Implementation Directives 收尾，实现方不会在关键失配未解决时去打磨细节。
 
 **适合场景。** 截图重建、设计转代码交接，以及任何不希望实现方重新猜测视觉设计的任务。
 
 **配套工具。** 规格输出由 Codex、Claude Code、Cursor、Gemini CLI 等编码代理消费。
 
-**阅读。** [ui-screenshot-to-implementation-spec.md](ui-workflows/ui-screenshot-to-implementation-spec.md)（中文原文）
+**阅读。** [ui-screenshot-to-implementation-spec.md](ui-workflows/ui-screenshot-to-implementation-spec.md)（英文原文）
 
 <details>
 <summary>预览</summary>
 
-```text
-必须明确区分以下三类信息：
-
+````text
 ### OBSERVED
-
-可以直接从截图确认的事实。
+Directly visible or verifiable from the supplied material.
 
 ### ESTIMATED
+Visually measurable only approximately.
 
-可以从截图合理估计，但无法直接获得精确值。
+Format important estimates as:
 
-使用 `~` 表示估值。
-
-例如：
-
-`~24px`
-
-而不是伪装成：
-
-`24px`
+```text
+Estimated: ~240px
+Plausible range: 232–248px
+Confidence: high
+```
 
 ### INFERRED
+Not directly shown, but a reasonable conclusion from the visible structure or existing verified project context.
 
-截图没有直接展示，但根据 UI 结构进行的合理推断。
+Format:
 
-所有 INFERRED 内容必须明确标记。
-
-绝不能把推测写成截图事实。
+```text
+Inferred: sidebar likely collapses at narrow widths
+Confidence: medium
 ```
+
+### UNKNOWN
+Not supported strongly enough to estimate or infer safely.
+
+Do not disguise uncertainty as precision.
+````
 
 </details>
 
 ### UI Visual Fidelity Refinement Protocol
 
-**UI 视觉保真收敛协议。**（中文原文）
+**UI 视觉保真收敛协议 v2.0。**（英文原文）
 
-**它做什么。** 页面实现完成后，通过「渲染 → 截图 → 对比 → 修复」的闭环，让实现向参考截图持续收敛，直到剩余差异足够小、继续修改的收益明显降低。
+**它做什么。** v2.0：反复将真实浏览器渲染与参考截图对比，定位影响最大的差异并修复其根本原因，直到剩余差异影响很低或已无法合理缩减才停止。
 
 **为什么有效。**
 
-- **渲染即证据。** 协议禁止凭代码判断（如「CSS 已设为 24px，间距肯定正确」）——一切判断以真实浏览器渲染为准：**Implementation is hypothesis. Rendered screenshot is evidence.（实现是假设，渲染截图是证据。）**
-- **固定对比环境。** 字体、加载与渲染条件被固定（例如截图前先等待字体加载完成），保证对比在同等条件下进行。
-- **差异分类。** 每次发现的差异在改动代码前，先标注为 STRUCTURE / GEOMETRY / TYPOGRAPHY / COLOR / SURFACE / ASSET。
-- **保留现有功能。** 这是视觉修整任务，不是架构重写：重写页面、大规模重构、修改业务逻辑 / API 一律禁止。
-- **可验证的收敛。** 只有用真实差异清单证明收敛、并以真实截图为依据时，循环才会停止。
+- **渲染即证据。** 协议核心规则是「The implementation is a hypothesis. The browser render is evidence.」——正确性只看渲染结果，绝不单凭 CSS 值或 DOM 结构下结论。
+- **确定性环境，基线先行。** 先固定视口、缩放、DPR、路由、滚动、状态与字体/资源就绪条件，再采集基线渲染与排序后的差异清单——不要一开始就随机改 CSS。
+- **先全局后局部的层级。** 对比按 Tier 1 结构 → Tier 2 主要几何 → Tier 3 排版 → Tier 4 颜色 / 表面 → Tier 5 组件细节 → Tier 6 微调执行；高层级仍错误时禁止做微调。
+- **视觉严重度与验收门槛。** 差异按 V0–V3 分级（视觉专用，区别于 bug 优先级）；每个变更簇标注 IMPROVED / NEUTRAL / REGRESSED，若导致更高优先级区域回归则拒绝。
+- **先找根本原因。** 先检查共享原因（容器宽度、Token、继承样式、断点），再修补症状；每个变更簇只对应一个连贯假设，不堆叠补偿性 hack。
+- **明确的停止条件。** 仅当 V0 = 0、V1 = 0，完成全新终稿对比并登记 Remaining Difference Register 时才停止。
 
 **适合场景。** UI 依据规格实现完成后的视觉收敛阶段。
 
 **配套工具。** UI 实现代理：Codex、Claude Code、Cursor 等。
 
-**阅读。** [ui-visual-fidelity-refinement.md](ui-workflows/ui-visual-fidelity-refinement.md)（中文原文）
+**阅读。** [ui-visual-fidelity-refinement.md](ui-workflows/ui-visual-fidelity-refinement.md)（英文原文）
 
 <details>
 <summary>预览</summary>
 
 ```text
-任何视觉判断都必须以真实 Browser Render 为依据。
+The implementation is a hypothesis.
+The browser render is evidence.
 
-禁止：
-
-> “CSS 已经设置为 24px，所以间距应该正确。”
-
-必须：
-
-> 截图确认真实渲染中的视觉间距是否与参考图一致。
-
-**Implementation is hypothesis.  
-Rendered screenshot is evidence.**
+CAPTURE / OBSERVE
+↓
+COMPARE
+↓
+RANK DIFFERENCES
+↓
+IDENTIFY ROOT CAUSE
+↓
+PATCH ONE COHERENT CLUSTER
+↓
+RENDER AGAIN
+↓
+ACCEPT / ADJUST / REVERT
+↓
+REPEAT
 ```
 
 </details>
