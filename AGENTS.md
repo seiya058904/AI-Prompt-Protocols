@@ -6,6 +6,7 @@ AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, codi
 
 ## Layout
 
+- `MAINTENANCE.md` — prompt lifecycle and maintenance rules.
 - `agent-rules/` — global behavioral rule sets (English): `codex-global-rules.md` and the tool-agnostic `universal-coding-agent-global-rules.md`. Chinese translations live in `translations/zh-CN/agent-rules/`.
 - `ui-workflows/` — UI screenshot → implementation spec, and UI visual fidelity refinement (English).
 - `project-workflows/project-closeout.md` — Git closeout / handoff protocol (Chinese).
@@ -15,11 +16,13 @@ AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, codi
 
 ## Ground rules
 
-- The seven prompt documents under `agent-rules/`, `ui-workflows/`, `project-workflows/`, `review-workflows/`, and `init-workflows/` are curated content. Do not rewrite their bodies; only metadata blockquotes (Purpose / Audience) and markdown cleanup are permitted.
+- The prompt documents are curated content. Do not make unsolicited substantive rewrites to curated prompts. When a task explicitly requests a prompt update, modify the canonical prompt deliberately and follow `MAINTENANCE.md` for synchronization and verification.
+- See [MAINTENANCE.md](MAINTENANCE.md) for prompt lifecycle, replacement, translation, and synchronization rules.
 - English rule documents may ship Chinese translations under `translations/zh-CN/agent-rules/`; the translation must link back to the English original and treat it as canonical.
 - `README.md` and `README.zh-CN.md` must stay in sync: same headings and anchors (showcase headings keep the English document names), same relative links. Verify links resolve before committing.
 - Never commit local machine paths (for example absolute Windows paths), personal knowledge-vault paths, or credentials.
 - Do not add websites, frameworks, logos, or badge walls; keep the repository plain Markdown.
+- Review the final diff before committing; commit only task-owned changes.
 
 ## Commands
 

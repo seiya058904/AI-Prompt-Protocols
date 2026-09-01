@@ -8,7 +8,7 @@
 
 本仓库是一份小而精的纯文本 Markdown 提示词集合，服务于 AI 辅助开发。每份文档都是完整、自洽的提示词——复制它、放进你的代理上下文、直接使用。
 
-本页是 [README.md](README.md) 的中文镜像，信息架构、锚点与链接结构保持一致。两份英文规则附带中文译文（[`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/)）；收工协议本身即以中文撰写，UI 工作流、代码审查与代理初始化协议均为英文。
+本页是 [README.md](README.md) 的中文镜像，信息架构、锚点与链接结构保持一致。两份英文规则附带中文译文（[`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/)）；收工协议本身即以中文撰写，UI 工作流、代码审查与代理初始化协议均为英文。提示词的生命周期与维护规则见 [MAINTENANCE.md](MAINTENANCE.md)。
 
 ## 协议选择（Choose a Protocol）
 
@@ -357,6 +357,7 @@ Closeout
 .
 ├── README.md
 ├── README.zh-CN.md
+├── MAINTENANCE.md
 ├── LICENSE
 ├── .gitignore
 ├── agent-rules/
@@ -387,6 +388,7 @@ Closeout
 - bug 报告与歧义报告
 - 对现有提示词的具体改进
 - 中文文档的翻译修正
+- 提示词生命周期与维护改进（见 [MAINTENANCE.md](MAINTENANCE.md)）
 - 真实世界的使用反馈
 
 请勿提交批量生成或未经验证的提示词列表。如果你的提示词经受住了真实项目的考验，请说明它在哪里、如何被使用。

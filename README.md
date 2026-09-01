@@ -8,7 +8,7 @@
 
 A small, high-signal collection of plain-text Markdown documents for AI-assisted development. Each document is a complete, self-contained prompt — copy it, put it into your agent's context, and use it.
 
-The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The two English rule sets ship with Chinese translations under [`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/). The project-closeout protocol is written in Chinese natively; the UI workflow, code-review, and agent-init protocols are in English.
+The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The two English rule sets ship with Chinese translations under [`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/). The project-closeout protocol is written in Chinese natively; the UI workflow, code-review, and agent-init protocols are in English. Prompt lifecycle and maintenance rules live in [MAINTENANCE.md](MAINTENANCE.md).
 
 ## Choose a Protocol
 
@@ -343,6 +343,7 @@ The rule documents are written to fit a "global rules" slot, but whether a tool 
 .
 ├── README.md
 ├── README.zh-CN.md
+├── MAINTENANCE.md
 ├── LICENSE
 ├── .gitignore
 ├── agent-rules/
@@ -373,6 +374,7 @@ Welcome:
 - bug reports and ambiguity reports
 - concrete improvements to existing prompts
 - translation fixes for the Chinese documents
+- prompt lifecycle and maintenance improvements (see [MAINTENANCE.md](MAINTENANCE.md))
 - real-world usage feedback
 
 Please do not submit bulk-generated or unverified prompt lists. If a prompt survived real projects, describe where and how it was used.
