@@ -8,7 +8,7 @@
 
 A small, high-signal collection of plain-text Markdown documents for AI-assisted development. Each document is a complete, self-contained prompt — copy it, put it into your agent's context, and use it.
 
-The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The two English rule sets ship with Chinese translations under [`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/); the three workflow protocols are written in Chinese natively.
+The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The two English rule sets ship with Chinese translations under [`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/). Three workflow protocols are written in Chinese natively; the code-review and agent-init protocols are in English.
 
 ## Choose a Protocol
 
@@ -19,6 +19,8 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 | [UI Screenshot → Implementation Spec Protocol](#ui-screenshot--implementation-spec-protocol) | Turns a screenshot / mockup into a precise, executable UI implementation spec | Before implementation: analysis in, spec out | 中文 |
 | [UI Visual Fidelity Refinement Protocol](#ui-visual-fidelity-refinement-protocol) | Converges an implemented UI to the reference screenshot | After implementation: visual convergence phase | 中文 |
 | [Project Closeout Prompt](#project-closeout-prompt) | Lands finished work safely into the default branch and syncs it | End of a milestone, release, or handoff | 中文 |
+| [Expert Code Review Protocol](#expert-code-review-protocol) | High-signal code review: real, actionable, merge-relevant findings only | Pre-merge review of PRs / diffs | English |
+| [Universal Agent Init](#universal-agent-init) | Initializes or improves a repo's `AGENTS.md` / `CLAUDE.md` from repository evidence | Bootstrapping or reconciling agent instructions | English |
 
 ## Prompt Library
 
@@ -206,6 +208,82 @@ Rendered screenshot is evidence.**
 
 </details>
 
+### Expert Code Review Protocol
+
+**What it does.** A high-signal code review protocol: reviews code as if deciding whether it is safe and appropriate to merge into production, prioritizing real, actionable issues over comment volume.
+
+**Why it works.**
+
+- **Six qualification criteria.** An issue is reported only when it is supported by evidence, discrete and actionable, materially relevant, specific enough to fix, not a subjective preference, and not a duplicate — prefer no finding over a speculative or low-confidence finding.
+- **Confidence with a threshold.** Every finding carries a 0.0–1.0 confidence score; the reviewer must try to disprove each finding and normally reports only findings at >= 0.80, with a `Needs Verification` bucket for severe-but-unproven concerns.
+- **Risk-first review order.** Review runs from the highest-level risk down: intent and design → correctness → security → performance → maintainability → language/framework → tests → documentation.
+- **Severity system.** P0 (immediate blocker) through P3 (non-blocking improvement), each with concrete examples.
+- **Explicit low-value list.** Trivial formatting, style preferences, generic "add more tests" comments, and theoretical micro-optimizations are excluded unless explicitly requested.
+- **Honest verdict.** The review ends with exactly one of APPROVE / CHANGES REQUESTED / NEEDS CONTEXT — and never claims to have run tests, builds, or linters that were not actually run.
+
+**Best for.** Pre-merge review of PRs and diffs, security-sensitive reviews, and teams tired of low-signal review noise.
+
+**Works with.** Coding agents asked to review code (Codex, Claude Code, Cursor, and similar); also usable in chat or agent review workflows.
+
+**Read.** [expert-code-review.md](review-workflows/expert-code-review.md)（英文原文）
+
+<details>
+<summary>Preview</summary>
+
+```text
+Report an issue only when it is:
+
+1. supported by the available code or context
+2. discrete and actionable
+3. materially relevant
+4. specific enough for the author to understand and fix
+5. not merely a subjective preference
+6. not a duplicate of another finding
+
+Prefer no finding over a speculative or low-confidence finding.
+
+Normally report only findings with confidence >= 0.80.
+
+A potentially severe issue with insufficient evidence may instead be placed under `Needs Verification`, clearly explaining what missing evidence would confirm or dismiss it.
+
+Never present speculation as a confirmed bug.
+```
+
+</details>
+
+### Universal Agent Init
+
+**What it does.** Initializes or improves a repository's persistent AI-agent instructions: a lean, accurate root `AGENTS.md` for shared guidance, plus a root `CLAUDE.md` as the Claude Code entry point — derived from repository evidence and verified before committing.
+
+**Why it works.**
+
+- **Evidence over invention.** Every added path, command, and convention must be verified against the repository; inventing commands, policies, or architecture is forbidden, and personal / machine-local / global instruction files are never copied into committed files.
+- **Lean by design.** Targets roughly 200–400 words for a simple repository: persistent instructions consume model context, and generic advice ("write clean code") is excluded unless it has concrete repository-specific meaning.
+- **One source of truth.** `CLAUDE.md` normally contains exactly `@AGENTS.md`; shared guidance lives in one file and is not duplicated.
+- **Conservative handling.** Existing instruction files are never blindly overwritten; smallest effective diff; `AGENTS.override.md` precedence is recognized and reported.
+- **Verification and safe commit.** Re-reads the finals, verifies every path and command, checks the diff (`git diff --check`), scans for secrets and private paths, and commits only task-owned files with explicit pathspecs — never pushes or opens PRs unless explicitly asked.
+
+**Best for.** Bootstrapping agent instructions in a new repository, or reconciling existing `AGENTS.md` / `CLAUDE.md` files without losing user work.
+
+**Works with.** Coding agents with repository access: Codex (via `AGENTS.md`), Claude Code (via `CLAUDE.md`), Cursor, and similar.
+
+**Read.** [universal-agent-init.md](init-workflows/universal-agent-init.md)（英文原文）
+
+<details>
+<summary>Preview</summary>
+
+````text
+If no root `CLAUDE.md` exists, normally create exactly:
+
+```md
+@AGENTS.md
+```
+
+Persistent instructions consume model context. Do not add generic advice such as “write clean code,” “use best practices,” “test thoroughly,” or “avoid bugs” unless it has concrete repository-specific meaning.
+````
+
+</details>
+
 ## Recommended Workflow
 
 The repository is organized around one pipeline: rules first, project context second, then a task protocol, then verification, then closeout.
@@ -227,6 +305,8 @@ Typical scenarios:
 - **Coding session** → load [Global Rules](#codex-global-rules) as persistent instructions, then work directly.
 - **Screenshot reconstruction** → run the [Spec Protocol](#ui-screenshot--implementation-spec-protocol) on the screenshot → implement from the spec → run [Visual Fidelity Refinement](#ui-visual-fidelity-refinement-protocol) to converge the render.
 - **Finished project** → run [Project Closeout](#project-closeout-prompt) to land and sync the work.
+- **Before merge** → run [Expert Code Review](#expert-code-review-protocol) on the PR or diff before merging.
+- **New repository** → run [Universal Agent Init](#universal-agent-init) to set up `AGENTS.md` / `CLAUDE.md` before long-running sessions.
 
 ## Philosophy
 
@@ -264,6 +344,10 @@ The rule documents are written to fit a "global rules" slot, but whether a tool 
 │   └── ui-visual-fidelity-refinement.md
 ├── project-workflows/
 │   └── project-closeout.md
+├── review-workflows/
+│   └── expert-code-review.md
+├── init-workflows/
+│   └── universal-agent-init.md
 └── translations/
     └── zh-CN/
         └── agent-rules/

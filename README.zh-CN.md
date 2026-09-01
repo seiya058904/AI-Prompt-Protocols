@@ -8,7 +8,7 @@
 
 本仓库是一份小而精的纯文本 Markdown 提示词集合，服务于 AI 辅助开发。每份文档都是完整、自洽的提示词——复制它、放进你的代理上下文、直接使用。
 
-本页是 [README.md](README.md) 的中文镜像，信息架构、锚点与链接结构保持一致。两份英文规则附带中文译文（[`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/)）；三份工作流协议本身即以中文撰写。
+本页是 [README.md](README.md) 的中文镜像，信息架构、锚点与链接结构保持一致。两份英文规则附带中文译文（[`translations/zh-CN/agent-rules/`](translations/zh-CN/agent-rules/)）；三份工作流协议本身即以中文撰写，代码审查与代理初始化两份协议为英文。
 
 ## 协议选择（Choose a Protocol）
 
@@ -19,6 +19,8 @@
 | [UI Screenshot → Implementation Spec Protocol](#ui-screenshot--implementation-spec-protocol) | 将截图 / 设计稿转化为精确、可执行的 UI 实现规格 | 实现之前：先分析、后输出规格 | 中文 |
 | [UI Visual Fidelity Refinement Protocol](#ui-visual-fidelity-refinement-protocol) | 通过「渲染 → 对比 → 修复」闭环让实现向参考截图收敛 | 实现之后：视觉收敛阶段 | 中文 |
 | [Project Closeout Prompt](#project-closeout-prompt) | 将本轮成果安全收敛进默认分支并同步远端 | 里程碑结束、发布或交接时 | 中文 |
+| [Expert Code Review Protocol](#expert-code-review-protocol) | 高信号代码审查：只报告真实、可操作、与合并相关的发现 | 合并前审查 PR / diff | English |
+| [Universal Agent Init](#universal-agent-init) | 依据仓库证据初始化或改进 `AGENTS.md` / `CLAUDE.md` | 初始化或梳理代理指令 | English |
 
 ## 协议库（Prompt Library）
 
@@ -216,6 +218,86 @@ Rendered screenshot is evidence.**
 
 </details>
 
+### Expert Code Review Protocol
+
+**专家代码审查协议。**（英文原文）
+
+**它做什么。** 一份高信号代码审查协议：像决定「这段代码是否安全、适合合并进生产环境」一样审查代码，优先真实、可操作的问题，而不是评论数量。
+
+**为什么有效。**
+
+- **六条入选标准。** 只有当问题有证据支撑、独立且可操作、实质性相关、具体到作者能理解并修复、不是主观偏好、也不是重复发现时，才予以报告——宁可没有发现，也不报投机性或低置信度的发现。
+- **置信度门槛。** 每条发现附带 0.0–1.0 置信度；审查者必须先尝试推翻每条发现，通常只报告置信度 >= 0.80 的发现；严重但证据不足的担忧放入 `Needs Verification`。
+- **风险优先的审查顺序。** 从最高层风险向下审查：意图与设计 → 正确性 → 安全 → 性能 → 可维护性 → 语言 / 框架 → 测试 → 文档。
+- **严重度体系。** P0（立即阻塞）到 P3（非阻塞改进），每级都有具体示例。
+- **明确排除低价值评论。** 琐碎格式、风格偏好、泛泛的「补测试」评论、理论性的微优化，除非明确要求，一律不报。
+- **诚实的结论。** 审查以 APPROVE / CHANGES REQUESTED / NEEDS CONTEXT 三选一收尾——绝不声称运行过实际没有运行的测试、构建或 linter。
+
+**适合场景。** 合并前的 PR / diff 审查、安全敏感审查，以及受够了低信号审查噪音的团队。
+
+**配套工具。** 被要求审查代码的编码代理（Codex、Claude Code、Cursor 等）；也适用于聊天或代理审查工作流。
+
+**阅读。** [expert-code-review.md](review-workflows/expert-code-review.md)（英文原文）
+
+<details>
+<summary>预览</summary>
+
+```text
+Report an issue only when it is:
+
+1. supported by the available code or context
+2. discrete and actionable
+3. materially relevant
+4. specific enough for the author to understand and fix
+5. not merely a subjective preference
+6. not a duplicate of another finding
+
+Prefer no finding over a speculative or low-confidence finding.
+
+Normally report only findings with confidence >= 0.80.
+
+A potentially severe issue with insufficient evidence may instead be placed under `Needs Verification`, clearly explaining what missing evidence would confirm or dismiss it.
+
+Never present speculation as a confirmed bug.
+```
+
+</details>
+
+### Universal Agent Init
+
+**通用代理初始化。**（英文原文）
+
+**它做什么。** 初始化或改进仓库的持久 AI 代理指令：一份精简、准确的根级 `AGENTS.md` 作为共享指引，外加根级 `CLAUDE.md` 作为 Claude Code 入口——内容以仓库证据为准，并在提交前验证。
+
+**为什么有效。**
+
+- **证据而非臆造。** 每一条新增路径、命令与约定都必须对照仓库验证；禁止臆造命令、策略或架构，绝不把个人 / 机器本地 / 全局指令文件复制进提交内容。
+- **刻意精简。** 简单仓库目标约 200–400 词：持久指令会消耗模型上下文，泛泛的「写好代码」类建议（除非有具体的仓库含义）一律排除。
+- **单一事实来源。** `CLAUDE.md` 通常只包含 `@AGENTS.md` 一行导入；共享指引只存一处，不重复。
+- **保守处理。** 现有指令文件绝不盲目覆盖；最小有效 diff；识别并报告 `AGENTS.override.md` 的优先级。
+- **验证与安全提交。** 复查最终文件、逐条验证路径与命令、检查 diff（`git diff --check`）、扫描密钥与私有路径，并且只用显式 pathspec 提交本任务文件——未经明确要求绝不推送或开 PR。
+
+**适合场景。** 在新仓库初始化代理指令，或在保留用户成果的前提下梳理已有的 `AGENTS.md` / `CLAUDE.md`。
+
+**配套工具。** 拥有仓库访问权的编码代理：Codex（通过 `AGENTS.md`）、Claude Code（通过 `CLAUDE.md`）、Cursor 等。
+
+**阅读。** [universal-agent-init.md](init-workflows/universal-agent-init.md)（英文原文）
+
+<details>
+<summary>预览</summary>
+
+````text
+If no root `CLAUDE.md` exists, normally create exactly:
+
+```md
+@AGENTS.md
+```
+
+Persistent instructions consume model context. Do not add generic advice such as “write clean code,” “use best practices,” “test thoroughly,” or “avoid bugs” unless it has concrete repository-specific meaning.
+````
+
+</details>
+
 ## 推荐工作流（Recommended Workflow）
 
 整个仓库围绕一条流水线组织：先规则、再项目上下文、然后是任务协议、验证、最后收工。
@@ -237,6 +319,8 @@ Closeout
 - **编码会话** → 将 [Global Rules](#codex-global-rules) 作为持久指令加载，然后直接工作。
 - **截图重建** → 对截图运行 [Spec 协议](#ui-screenshot--implementation-spec-protocol) → 依据规格实现 → 运行 [视觉保真收敛](#ui-visual-fidelity-refinement-protocol) 让渲染向参考图收敛。
 - **项目完成** → 运行 [收工协议](#project-closeout-prompt)，安全落地并同步成果。
+- **合并之前** → 合并前对 PR 或 diff 运行 [Expert Code Review](#expert-code-review-protocol)。
+- **新仓库** → 运行 [Universal Agent Init](#universal-agent-init) 初始化 `AGENTS.md` / `CLAUDE.md`，再开始长时间会话。
 
 ## 理念（Philosophy）
 
@@ -274,6 +358,10 @@ Closeout
 │   └── ui-visual-fidelity-refinement.md
 ├── project-workflows/
 │   └── project-closeout.md
+├── review-workflows/
+│   └── expert-code-review.md
+├── init-workflows/
+│   └── universal-agent-init.md
 └── translations/
     └── zh-CN/
         └── agent-rules/
