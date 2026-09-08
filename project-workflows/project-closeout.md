@@ -214,23 +214,35 @@ git diff --cached
 
 ### Push 前审计 Outgoing Commits
 
-在任何 push 前，检查相对 upstream 分支的精确 outgoing commit 范围。
+在任何 push 前，确定 outgoing commit 审计的比较基准（comparison base）。
 
-至少使用等价命令：
+如果当前 branch 已有 upstream，对照该 upstream 比较：
 
 ```text
 git log --oneline <upstream>..HEAD
 ```
 
+如果 branch 尚无 upstream（例如首次 push 前的新 feature/task branch），对照该 task branch 预期派生或整合的 branch / ref 比较——通常是已验证的 remote default branch，或其他仓库定义的 base branch：
+
+```text
+git log --oneline <verified-base-ref>..HEAD
+```
+
+不能因为尚未配置 upstream 就跳过 outgoing commit 审计。
+
+不要武断假定 base 一定是 `origin/main`。通过 repository workflow、branch history、merge-base、remote default branch 以及当前任务创建分支时的上下文，确定合理的 comparison base。
+
 需要时再检查：
 
 ```text
-git diff --stat <upstream>...HEAD
+git diff --stat <comparison-ref>...HEAD
 ```
 
 普通 push 除了当前任务，还可能发布 branch 上已有的、尚未发布的 pre-existing local commits。
 
 只有 outgoing commits 已被理解、且属于已授权的收工范围时，才 push。
+
+如果无法可靠确认新 branch 的 comparison base，且因此无法判断 outgoing commits 的授权范围，则不要 push，并向用户说明。
 
 如果 outgoing 范围内包含无关、预存或不确定的 commits，不要为了“让仓库同步”而推送它们。
 
