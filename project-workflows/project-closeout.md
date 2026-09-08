@@ -212,6 +212,32 @@ git diff --cached
 
 不要创建空 commit。
 
+### Push 前审计 Outgoing Commits
+
+在任何 push 前，检查相对 upstream 分支的精确 outgoing commit 范围。
+
+至少使用等价命令：
+
+```text
+git log --oneline <upstream>..HEAD
+```
+
+需要时再检查：
+
+```text
+git diff --stat <upstream>...HEAD
+```
+
+普通 push 除了当前任务，还可能发布 branch 上已有的、尚未发布的 pre-existing local commits。
+
+只有 outgoing commits 已被理解、且属于已授权的收工范围时，才 push。
+
+如果 outgoing 范围内包含无关、预存或不确定的 commits，不要为了“让仓库同步”而推送它们。
+
+不要通过改写历史来移除它们。
+
+保留现状并把问题呈现给用户决策，除非仓库既有工作流提供了另一条明确安全的路径。
+
 ## 5. 处理 Branch / Worktree 中的成果
 
 如果本轮成果位于 task branch 或 worktree：

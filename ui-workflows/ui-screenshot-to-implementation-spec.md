@@ -290,6 +290,23 @@ For multiple screenshots, compare actual changes and derive responsive behavior 
 
 Do not invent hamburger menus, hidden controls, or arbitrary breakpoints.
 
+## Multiple Screenshot Relationships
+
+When multiple screenshots are supplied, first determine their relationship:
+
+- same page, different viewport
+- same page, different state
+- different pages from the same product
+- unrelated references
+
+Use:
+
+- viewport variants as responsive evidence
+- state variants as interaction/state evidence
+- different pages only for page-specific structure plus genuinely repeated design-system evidence
+
+Do not merge different pages or unrelated references into one imagined interface.
+
 ## 10. Fidelity Priorities
 
 Classify implementation requirements as:

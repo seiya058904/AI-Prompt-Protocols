@@ -28,6 +28,27 @@ Derived from canonical prompts:
 
 When a canonical prompt changes, check whether the derived content needs synchronization. README and translations are never the source of truth.
 
+## 1b. Prompt Independence
+
+Except for global-rule prompts under `agent-rules/`, every canonical prompt must be self-contained and portable.
+
+A non-global prompt must not depend on or require:
+
+- Knowledge / Knowledge Vault
+- a personal collection repository
+- user-specific local machine paths
+- the user's other specific projects or repositories
+- an external project-memory / handoff / context system
+- restoring context from another private repository
+
+Requirement:
+
+> A non-global prompt should still work correctly when copied by itself into a compatible coding agent.
+
+This does not prohibit legitimate standard tool paths. For example, `Universal Agent Init` may reference `~/.codex/AGENTS.md`, `~/.claude/CLAUDE.md`, or `.claude/rules/` because those are product-defined standard configuration paths. What is forbidden is user-specific external dependencies.
+
+Global Rules under `agent-rules/` are the only exception: they may provide optional personal-collection integration, but the public version must use a generic placeholder and must not contain real private paths.
+
 ## 2. Workflow
 
 Every maintenance task follows:
