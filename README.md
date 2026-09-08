@@ -14,7 +14,7 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 
 | Protocol | What it is | Best for | Language |
 | --- | --- | --- | --- |
-| [Codex Global Rules](#codex-global-rules) | Global behavioral rules for long-running Codex coding sessions | Standardizing a Codex-centric workflow | English · 中文译文 |
+| [Codex Global Rules](#codex-global-rules) | Global behavioral rules for reliable, low-noise Codex coding sessions | Standardizing a Codex-centric workflow | English · 中文译文 |
 | [Universal Coding Agent Global Rules](#universal-coding-agent-global-rules) | The same core rules, written tool-agnostic | Teams mixing agents (Codex, Claude Code, Cursor, …) | English · 中文译文 |
 | [UI Screenshot → Implementation Spec Protocol](#ui-screenshot--implementation-spec-protocol) | Turns a screenshot / mockup into a precise, executable UI implementation spec | Before implementation: analysis in, spec out | English |
 | [UI Visual Fidelity Refinement Protocol](#ui-visual-fidelity-refinement-protocol) | Converges an implemented UI to the reference screenshot | After implementation: visual convergence phase | English |
@@ -26,15 +26,16 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 
 ### Codex Global Rules
 
-**What it does.** A reusable set of global behavioral rules for long-running Codex coding sessions: how to ask questions, how much to change, what is safe to delete, what counts as done, and how to report.
+**What it does.** A reusable set of global behavioral rules for reliable, low-noise Codex coding sessions: how to ask questions, how much to change, what is safe to delete, what counts as done, and how to report.
 
 **Why it works.**
 
-- **Reversible assumptions over questions.** Ask for clarification only when missing information could cause data loss, an irreversible decision, or a materially different result; otherwise pick the safest reversible assumption and continue.
-- **Smallest safe change.** Reuse existing code and patterns before adding abstractions, dependencies, or infrastructure; no unrequested features or unrelated refactors.
-- **Deletion blacklist.** `del /s`, `rd /s`, `rmdir /s`, `Remove-Item -Recurse`, `rm -rf`, and `git clean -fd/-fdx` are never used; only explicitly authorized, individually verified paths may be deleted.
-- **Verify before claiming success.** Define success criteria before non-trivial changes, inspect the final diff, and run only relevant checks.
-- **Tool batching.** In Code Mode, independent functions.exec-available calls are batched into one call with `Promise.allSettled` / `Promise.all` semantics.
+- **Reversible assumptions over questions.** Ask for clarification only when missing information could cause data loss, an irreversible outcome, a materially different result, or require a genuine user choice; otherwise pick the safest reversible assumption and continue.
+- **Smallest safe change.** Reuse existing code, architecture, and conventions before adding abstractions, dependencies, or infrastructure; no unrequested features, future-proofing, or unrelated refactors.
+- **Deletion blacklist.** Destructive blanket cleanup commands such as `del /s`, `rd /s`, `rmdir /s`, `Remove-Item -Recurse`, `rm -rf`, and `git clean -fd/-fdx` are never used; only explicitly identified and verified paths may be deleted.
+- **External side-effect gate.** Push, merge, deploy, publish, release, dependency updates, and remote configuration changes require explicit authorization or a deliberately invoked workflow whose purpose includes that action.
+- **Verify before claiming success.** Establish success criteria before non-trivial changes, inspect the final diff, run only relevant checks, and never claim verification that did not actually run.
+- **Tool batching.** When the environment supports it, independent read-only inspections are batched within a bounded stage; dependent, conflicting, approving, or destructive steps stay sequential.
 
 **Best for.** Long-running Codex sessions and repos that want one consistent behavior baseline.
 
@@ -46,27 +47,28 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 <summary>Preview</summary>
 
 ```text
-* Ask for clarification only when missing information could materially change the result, cause data loss, or make an irreversible decision. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
-* Never perform broad or uncertain-scope deletion. Do not use `del /s`, `rd /s`, `rmdir /s`, `Remove-Item -Recurse`, `rm -rf`, or `git clean -fd/-fdx`. Delete only explicitly authorized, individually verified paths.
-* Run only checks relevant to the change. Inspect the final diff and verify results before claiming success.
+* Ask for clarification only when missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
+* Never perform broad or uncertain-scope deletion. Do not use destructive blanket cleanup commands such as `rm -rf`, `Remove-Item -Recurse`, `git clean -fd/-fdx`, `del /s`, `rd /s`, or `rmdir /s`. Delete only explicitly identified paths whose purpose and safety have been verified.
+* Run only checks relevant to the change. Do not run broad or expensive validation merely for appearance of thoroughness.
 ```
 
 </details>
 
 ### Universal Coding Agent Global Rules
 
-**What it does.** The same core behavioral rules, written without Codex-specific tooling so they apply across coding agents: Codex, Claude Code, Cursor, and similar.
+**What it does.** The same core behavioral rules, written without Codex-specific tooling so they apply across coding agents: Codex, Claude Code, Cursor, Gemini CLI, and similar.
 
 **Why it works.**
 
-- **Same 12 core rules.** The behavioral contract — reversible assumptions, minimal change, deletion safety, verification — is identical to the Codex set.
-- **One honest difference.** The only substantive difference is the Tool Efficiency section: generic "run independent inspections concurrently when supported" instead of Codex's functions.exec specifics.
+- **Same core rules.** The behavioral contract — reversible assumptions, minimal change, deletion safety, external side-effect gate, verification — is identical to the Codex set.
+- **One honest difference.** The only substantive difference is the Tool Efficiency section: tool-agnostic "batch independent inspections when supported" wording instead of Codex-specific phrasing.
+- **Optional Personal Collection.** A generic, opt-in hook for a user-curated collection of prompts and references; it is never treated as project memory or scanned by default, and the path is a placeholder rather than a machine-specific value.
 - **Pick per environment.** Use the Codex version for Codex sessions and the universal version for other agents, instead of maintaining two divergent philosophies.
 - **Small and syncable.** Two short rule files, not two prompt empires; easy to review and keep in sync.
 
 **Best for.** Individuals or teams who switch between agents, or want one rule set that any coding agent can load.
 
-**Works with.** Codex, Claude Code, Cursor, and similar coding agents.
+**Works with.** Codex, Claude Code, Cursor, Gemini CLI, and similar coding agents.
 
 **Read.** [universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md) · [中文译文](translations/zh-CN/agent-rules/universal-coding-agent-global-rules.md)
 
@@ -74,26 +76,26 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 <summary>Preview</summary>
 
 ```text
-* Ask for clarification only when missing information could materially change the result, cause data loss, or make an irreversible decision. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
-* Never perform broad or uncertain-scope deletion. Do not use `del /s`, `rd /s`, `rmdir /s`, `Remove-Item -Recurse`, `rm -rf`, or `git clean -fd/-fdx`. Delete only explicitly authorized, individually verified paths.
+* Ask for clarification only when missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
+* Never perform broad or uncertain-scope deletion. Avoid destructive blanket cleanup commands and delete only explicitly identified paths whose purpose and safety have been verified.
 
-Within each bounded stage, run independent inspections or tool calls concurrently when supported. Batch work that does not depend on intermediate results, and inspect all returned results.
+When the environment supports parallel execution, batch independent inspections or other non-conflicting operations within the same bounded stage.
 ```
 
 </details>
 
 ### UI Screenshot → Implementation Spec Protocol
 
-**What it does.** v2.0: converts one or more reference screenshots, mockups, or design images into a concise, structured, implementation-ready UI Implementation Specification — the smallest accurate visual model that explains the screenshot well enough to reproduce it. The agent's job is inspect → model → specify, never implement.
+**What it does.** Converts one or more reference screenshots, mockups, or design images into a concise, structured, implementation-ready UI Implementation Specification — the smallest accurate visual model that explains the screenshot well enough to reproduce it. The agent's job is inspect → model → specify, never implement.
 
 **Why it works.**
 
-- **Source-of-truth hierarchy.** Evidence is ranked: explicit user requirements → screenshots → cross-screenshot consistency → verified project assets / tokens → spec estimates → inference; when lower-priority evidence conflicts with higher-priority evidence, the higher priority wins.
-- **Four evidence labels.** Every non-trivial statement is OBSERVED, ESTIMATED (with a structured `Estimated: ~240px / Plausible range: 232–248px / Confidence: high` format), INFERRED, or UNKNOWN — do not disguise uncertainty as precision.
-- **Anti-hallucination rules.** An explicit do-not-invent list (text, menus, logos, fonts, animations, responsive layouts, tokens), and recognizable products never override the supplied screenshots.
-- **Global before local.** An 11-step analysis order: source/canvas → composition → major regions → layout relationships → design system → component patterns → exact content → assets → interaction clues → responsive evidence → implementation-critical constraints.
+- **Source-of-truth hierarchy.** Evidence is ranked: explicit user requirements → screenshots → cross-screenshot consistency → verified project assets / tokens → reasonable measurement or estimate → inference; the screenshot is the visual ground truth unless the user says otherwise.
+- **Three evidence labels.** Information that is not directly established is marked ESTIMATED (with a structured `Estimated width: ~240px / Confidence: high` format), INFERRED, or UNKNOWN — ordinary observations are not repeatedly labeled, and uncertainty is never disguised as precision.
+- **Anti-hallucination rules.** An explicit do-not-invent list (text, menus, fonts, colors, responsive states, features, branding, tokens), and recognizable products never override the supplied screenshots.
+- **Global before local.** An 11-step analysis order: canvas and viewport → global composition → major regions → layout relationships → typography / design system → reusable components → visible content → assets → visible states → responsive evidence → implementation-critical constraints.
 - **Relationships over coordinates.** Layout is described by container relationships, ratios, and spacing rhythm, with a preference for a small spacing system over dozens of isolated measurements.
-- **Priority and handoff.** Requirements are classed CRITICAL / IMPORTANT / COSMETIC, and the output ends with an Uncertainty Register and Implementation Directives so implementers never polish cosmetics while critical mismatches remain.
+- **Fidelity priorities and handoff.** Requirements are classed CRITICAL / IMPORTANT / COSMETIC, and the output ends with Material Uncertainty and Implementation Directives so implementers never polish cosmetics while critical mismatches remain.
 
 **Best for.** Screenshot reconstruction, design-to-code handoff, and any task where the implementer should not re-guess the visual design.
 
@@ -105,32 +107,21 @@ Within each bounded stage, run independent inspections or tool calls concurrentl
 <summary>Preview</summary>
 
 ````text
-### OBSERVED
-Directly visible or verifiable from the supplied material.
-
 ### ESTIMATED
-Visually measurable only approximately.
+Use when a value can only be approximated.
 
-Format important estimates as:
+Example:
 
 ```text
-Estimated: ~240px
-Plausible range: 232–248px
+Estimated width: ~240px
 Confidence: high
 ```
 
 ### INFERRED
-Not directly shown, but a reasonable conclusion from the visible structure or existing verified project context.
-
-Format:
-
-```text
-Inferred: sidebar likely collapses at narrow widths
-Confidence: medium
-```
+Use for behavior or structure that is not directly visible but is reasonably supported.
 
 ### UNKNOWN
-Not supported strongly enough to estimate or infer safely.
+Use when the available evidence is insufficient.
 
 Do not disguise uncertainty as precision.
 ````
@@ -139,16 +130,16 @@ Do not disguise uncertainty as precision.
 
 ### UI Visual Fidelity Refinement Protocol
 
-**What it does.** v2.0: repeatedly compares the actual browser render with reference screenshots, identifies the highest-impact differences, corrects their root causes, and stops only when remaining differences are low-impact or not reasonably reducible.
+**What it does.** Compares the actual rendered interface against the supplied reference, identifies meaningful differences, fixes their root causes, and verifies convergence without breaking functionality or maintainability.
 
 **Why it works.**
 
-- **Render is the evidence.** The protocol's core rule is "The implementation is a hypothesis. The browser render is evidence" — correctness is judged from the rendered page, never from CSS values or DOM structure in isolation.
-- **Deterministic environment, baseline first.** Viewport, zoom, DPR, route, scroll, state, and font/asset readiness are pinned, and a baseline render with a ranked difference inventory is captured before any change — do not begin by randomly editing CSS.
-- **Global before local tiers.** Comparison runs Tier 1 Structure → Tier 2 Major Geometry → Tier 3 Typography → Tier 4 Color / Surface → Tier 5 Component Detail → Tier 6 Micro Polish; micro polish is off-limits while higher tiers are wrong.
-- **Visual severity and acceptance gate.** Differences are graded V0–V3 (visual-specific, not bug priority); each change cluster is classified IMPROVED / NEUTRAL / REGRESSED and rejected if it regresses a higher-priority region.
-- **Root cause first.** Shared causes (container width, tokens, inherited styles, breakpoints) are inspected before patching symptoms; one coherent hypothesis per change cluster, no compensating hacks.
-- **Explicit stop conditions.** The loop stops only when V0 = 0 and V1 = 0, after a fresh final comparison and a documented Remaining Difference Register.
+- **Render is the evidence.** The protocol's core rule is "The implementation is a hypothesis. The rendered page is evidence" — correctness is judged from the rendered page, never from CSS values or DOM structure in isolation.
+- **Honest tool-availability gate.** Before starting, the agent determines whether real rendering and comparison are actually available: Full Visual Mode runs the complete iterative loop; Limited Verification Mode makes only evidence-supported code-level changes and must report `VISUAL VERIFICATION REQUIRED`.
+- **Stable environment, baseline first.** Reference dimensions, viewport, zoom, DPR, route, scroll, state, and font/asset readiness are pinned, and a baseline render with a ranked difference inventory is captured before any change — do not begin by randomly editing CSS.
+- **Global before local tiers.** Comparison runs V0 Structure → V1 Major Visual Impact → V2 Noticeable → V3 Cosmetic; micro polish is off-limits while higher tiers are wrong.
+- **Root cause first.** Shared causes (container width, layout model, tokens, inherited styles, breakpoints) are inspected before patching symptoms; one coherent hypothesis per change cluster, no compensating hacks.
+- **Acceptance gate and stop conditions.** Each change cluster is classified IMPROVED / NEUTRAL / REGRESSED and rejected if it regresses a higher-priority region; in Full Visual Mode the loop stops only when V0 = 0 and V1 = 0, after a fresh final comparison.
 
 **Best for.** The visual convergence phase after a UI has been implemented from a spec.
 
@@ -160,14 +151,16 @@ Do not disguise uncertainty as precision.
 <summary>Preview</summary>
 
 ```text
-The implementation is a hypothesis.
-The browser render is evidence.
+V0 — Structure
+V1 — Major Visual Impact
+V2 — Noticeable
+V3 — Cosmetic
 
 CAPTURE / OBSERVE
 ↓
 COMPARE
 ↓
-RANK DIFFERENCES
+RANK
 ↓
 IDENTIFY ROOT CAUSE
 ↓
@@ -184,17 +177,18 @@ REPEAT
 
 ### Project Closeout Prompt
 
-**What it does.** A Git closeout / handoff protocol: when the user says "wrap up", it safely lands this round's finished work into the repository's default branch — committed, merged, pushed, synced, and clean — no matter where the work happened (main, a feature branch, a worktree, detached HEAD, or un-pushed local commits).
+**What it does.** A Git closeout / handoff protocol: when the user explicitly says "wrap up", it safely lands this round's finished work into the state allowed by the repository's own integration workflow — committed, pushed, synced, and clean under the repo's actual model (direct-to-default, feature-branch integration, or PR-based), no matter where the work happened.
 
 **Why it works.**
 
-- **End state, not action list.** "Done" is defined as: work fully committed, in the default branch, pushed, local and remote default branches pointing at the same result, and a clean workspace — not merely "I committed and pushed".
-- **Intermediate states are explicitly not done.** Pushing a feature branch to the remote is not closeout; opening a PR is not closeout.
-- **Escalation rules.** Low-risk steps run autonomously; genuinely risky or irreversible steps — `git reset --hard`, force push — pause and ask the user first.
-- **Worktree / detached HEAD awareness.** The protocol accounts for work stranded in other worktrees or on detached HEAD and forbids leaving this round's results there.
-- **Verifiable final state.** The concrete completion check is `git rev-list --left-right --count HEAD...origin/<default>` returning `0 0`.
+- **Integration model first.** The protocol identifies how the repository actually integrates work — direct-to-default, feature branch + integration, or protected / PR-based — instead of forcing a `main` + direct-push model onto every repo.
+- **End state, not action list.** "Done" is defined by the repo's integration model: for direct-integration repos, work fully committed, pushed, local and remote defaults pointing at the same result, and a clean workspace; for PR-based repos, work pushed and at the point a PR is possible, with any remaining approval step reported as `Remaining integration step`.
+- **Authorization boundary.** Invoking the protocol authorizes normal, low-risk, task-owned Git wrap-up (status/diff checks, fetch, commit, push, safe local integration); force push, history rewrites, discarding user changes, and any external side effects require additional explicit authorization.
+- **Escalation rules.** Divergence, merge/rebase/reset/force choices, and business-semantic conflicts pause and ask the user first; ordinary mechanical conflicts may be resolved safely.
+- **Multi-repository support.** Each repository is checked independently; repos not touched by the round are only read-only verified, never given meaningless commits.
+- **Verifiable final state.** Completion is verified per repo with `git status`, `git rev-list --left-right --count HEAD...<upstream>`, and a final diff inspection.
 
-**Best for.** The end of a milestone, a release, or a handoff — when "done" must actually mean done.
+**Best for.** The end of a milestone, a release, or a handoff — when "done" must actually mean done under the repo's own workflow.
 
 **Works with.** Coding agents that can run Git commands (Codex, Claude Code, Cursor, and similar).
 
@@ -204,30 +198,31 @@ REPEAT
 <summary>Preview</summary>
 
 ```text
-“收工”不是简单提交当前文件，也不是只把当前分支 push 到远端。
+收工的判断标准不是“执行过 commit / push”。
 
-真正的目标是：
+真正目标是：
 
-> **把本轮已经完成的成果从它实际所在的位置安全收敛到仓库的最终正式状态。**
+> **本轮需要保留的成果已经被安全保存，并达到当前仓库正式工作流允许的最终状态，没有遗留本轮未处理工作。**
 
-**仅仅把 feature branch / worktree branch push 到远端，不算收工。**
+仓库的正式 integration model 可能不同。
 
-**仅仅创建 PR 但尚未合并，也不算完全收工。**
+先识别，再执行。
 ```
 
 </details>
 
 ### Expert Code Review Protocol
 
-**What it does.** A high-signal code review protocol: reviews code as if deciding whether it is safe and appropriate to merge into production, prioritizing real, actionable issues over comment volume.
+**What it does.** A high-signal code review protocol: reviews code as if deciding whether it is safe and appropriate to merge into production, prioritizing real, actionable issues over comment volume while minimizing speculation.
 
 **Why it works.**
 
-- **Six qualification criteria.** An issue is reported only when it is supported by evidence, discrete and actionable, materially relevant, specific enough to fix, not a subjective preference, and not a duplicate — prefer no finding over a speculative or low-confidence finding.
-- **Confidence with a threshold.** Every finding carries a 0.0–1.0 confidence score; the reviewer must try to disprove each finding and normally reports only findings at >= 0.80, with a `Needs Verification` bucket for severe-but-unproven concerns.
-- **Risk-first review order.** Review runs from the highest-level risk down: intent and design → correctness → security → performance → maintainability → language/framework → tests → documentation.
+- **Seven qualification criteria.** An issue is reported only when it is evidence-supported, discrete, actionable, materially relevant, specific enough to fix, not merely subjective, and not a duplicate — prefer no finding over a speculative finding.
+- **Confidence with a threshold.** Every finding carries a 0.0–1.0 confidence score; the reviewer must actively try to disprove each finding and normally reports only confirmed findings at >= 0.80, with a `Needs Verification` bucket for severe-but-unproven concerns.
+- **Risk-first review order.** Review runs from the highest-level risk down: intent/design → correctness/reliability → security → performance/resources → maintainability → tests/contracts.
+- **Targeted verification.** When repository and tool access are available, small relevant low-risk checks (focused test, targeted reproduction, narrow typecheck/lint, read-only call-site inspection) may raise or lower confidence in a finding — never broad suites for appearance of thoroughness.
 - **Severity system.** P0 (immediate blocker) through P3 (non-blocking improvement), each with concrete examples.
-- **Explicit low-value list.** Trivial formatting, style preferences, generic "add more tests" comments, and theoretical micro-optimizations are excluded unless explicitly requested.
+- **Explicit low-value list.** Trivial formatting, subjective style, generic "add tests" comments, and theoretical risks are excluded unless explicitly requested.
 - **Honest verdict.** The review ends with exactly one of APPROVE / CHANGES REQUESTED / NEEDS CONTEXT — and never claims to have run tests, builds, or linters that were not actually run.
 
 **Best for.** Pre-merge review of PRs and diffs, security-sensitive reviews, and teams tired of low-signal review noise.
@@ -242,20 +237,21 @@ REPEAT
 ```text
 Report an issue only when it is:
 
-1. supported by the available code or context
-2. discrete and actionable
-3. materially relevant
-4. specific enough for the author to understand and fix
-5. not merely a subjective preference
-6. not a duplicate of another finding
+1. evidence-supported
+2. discrete
+3. actionable
+4. materially relevant
+5. specific enough to fix
+6. not merely subjective
+7. not a duplicate
 
-Prefer no finding over a speculative or low-confidence finding.
+Prefer no finding over a speculative finding.
 
-Normally report only findings with confidence >= 0.80.
+Normally report confirmed findings only when confidence is at least 0.80.
 
-A potentially severe issue with insufficient evidence may instead be placed under `Needs Verification`, clearly explaining what missing evidence would confirm or dismiss it.
+A potentially serious concern with insufficient evidence belongs under `Needs Verification`, not as a confirmed bug.
 
-Never present speculation as a confirmed bug.
+Never present speculation as fact.
 ```
 
 </details>

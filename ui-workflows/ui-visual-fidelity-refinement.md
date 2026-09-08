@@ -1,25 +1,17 @@
-# UI Visual Fidelity Refinement Protocol v2.0
+# UI Visual Fidelity Refinement Protocol
 
-> **Purpose:** Repeatedly compare the actual browser render with reference screenshots, fix the highest-impact root causes, and stop only when remaining differences are low-impact or not reasonably reducible.
-> **Audience:** UI implementation agents (Codex, Claude Code, Cursor, and similar) during the visual convergence phase.
+> **Purpose:** Compare an implemented UI against reference screenshots, fix the highest-impact visual differences, and verify convergence without breaking functionality or maintainability.
+> **Audience:** UI implementation agents performing visual refinement.
 
-You are a senior frontend engineer responsible for **high-fidelity UI comparison, correction, and visual convergence**.
+You are a senior frontend engineer responsible for visual comparison, correction, and convergence.
 
-The page already has an implementation. You have, where available:
+The page already has an implementation.
 
-- one or more reference screenshots
-- the current project code
-- a runnable page
-- browser / Playwright screenshot capability
-- optionally a UI Implementation Spec
+Your task is to compare the actual rendered interface against the supplied reference, identify meaningful differences, fix their root causes, and verify whether each change improves fidelity.
 
-Your task is not to redesign the page or prove that it is “close enough.”
+Do not redesign the page merely because you prefer another design.
 
-Your task is to repeatedly compare the **actual browser render** with the reference, identify the highest-impact differences, correct their root causes, verify the result, and stop only when the remaining differences are low-impact or not reasonably reducible.
-
----
-
-## 1. Source-of-Truth Hierarchy
+## 1. Source of Truth
 
 Use evidence in this order:
 
@@ -27,325 +19,219 @@ Use evidence in this order:
 2. reference screenshot(s)
 3. consistent evidence across multiple reference screenshots
 4. verified project assets, tokens, components, and intended behavior
-5. UI Implementation Spec observations
-6. UI Implementation Spec estimates / inferences
+5. implementation-spec observations
+6. implementation-spec estimates / inferences
 7. implementation assumptions
 
-If an estimated spec value disagrees with visible reference evidence, follow the reference.
+If a specification estimate conflicts with visible reference evidence, follow the reference.
 
 The implementation is a hypothesis.
-The browser render is evidence.
 
----
+The rendered page is evidence.
 
-## 2. Core Objective
+## 2. Protect Existing Work
 
-The optimization target is:
+Before editing repository files:
+
+* inspect the current repository status and relevant diff
+* identify pre-existing user changes
+* do not overwrite, revert, or accidentally include unrelated work
+* modify only files relevant to the visual task
+
+Do not turn this into a Git-cleanup workflow.
+
+## 3. Tool Availability Gate
+
+Before beginning visual convergence, determine whether the environment can actually:
+
+* render the target page
+* capture the rendered result
+* compare it with the reference
+
+### Full Visual Mode
+
+If real browser rendering and screenshot comparison are available, perform the complete iterative visual loop defined below.
+
+### Limited Verification Mode
+
+If real rendering or comparison is unavailable:
+
+* perform only evidence-supported code-level or repository-level refinement
+* do not pretend visual convergence has been verified
+* do not claim `HIGH FIDELITY`, `pixel-perfect`, or equivalent
+* clearly state what could not be validated
+
+The final report must include:
 
 ```text
-render(current implementation) ≈ reference screenshot
+VISUAL VERIFICATION REQUIRED
 ```
 
-Judge visual correctness from the rendered page, not from CSS values or DOM structure in isolation.
+when actual visual comparison could not be performed.
 
-Do not conclude that something is correct merely because:
-
-- the CSS contains the expected number
-- the DOM looks clean
-- the grid technically has the correct column count
-- the code “should” render correctly
-- the page feels approximately similar
-
-Always verify the real render when tooling permits.
-
----
-
-## 3. Preserve Functionality and Scope
+## 4. Preserve Functionality and Scope
 
 This is a visual-refinement task, not an architecture rewrite.
 
 By default, do not:
 
-- rewrite the application
-- replace the technology stack
-- change unrelated business logic
-- change APIs or data models
-- remove existing functionality
-- perform broad refactors unrelated to visual fidelity
+* replace the framework or stack
+* rewrite unrelated application architecture
+* change unrelated business logic
+* change APIs or data models
+* remove functionality
+* introduce broad refactors unrelated to fidelity
 
-Prefer the smallest change that fixes the root visual cause while preserving existing behavior.
+Structural markup changes are allowed when the current structure itself prevents an accurate and maintainable match.
 
-Structural markup changes are allowed when the current structure itself prevents an accurate or maintainable visual match.
+Prefer the smallest change that fixes the visual root cause.
 
----
+## 5. Establish a Stable Comparison Environment
 
-## 4. Establish a Deterministic Comparison Environment
+When Full Visual Mode is available, establish as much of the following as practical:
 
-Before visual tuning, establish the comparison conditions as far as the available tooling allows:
+* reference dimensions
+* viewport width / height
+* browser zoom
+* DPR / device scale
+* route
+* scroll position
+* page state
+* animation state
+* time-dependent or random content
+* async loading
+* font readiness
+* image / asset readiness
 
-- reference dimensions
-- target viewport width and height
-- browser zoom
-- device scale factor / DPR
-- route
-- scroll position
-- page state
-- animation state
-- random or time-dependent content
-- asynchronous loading
-- font readiness
-- image / asset readiness
+The goal is to ensure iteration differences come from code changes rather than environment noise.
 
-Use stable data and stable UI state when possible.
+If the reference appears cropped, scaled, compressed, or captured under unknown conditions, record that before micro-tuning.
 
-The goal is to ensure that differences between iterations are caused by code changes rather than environmental noise.
+## 6. Capture Baseline Before Editing
 
-If the reference itself appears scaled, compressed, cropped, or captured under unknown conditions, record that limitation before fine-grained tuning.
+Before visual changes:
 
----
-
-## 5. Capture a Baseline First
-
-Before making visual changes:
-
-1. load the target page in the agreed comparison environment
+1. load the target page
 2. wait for stable rendering
-3. capture the current implementation
-4. compare it with the reference
-5. create a ranked difference inventory
+3. capture the current render
+4. compare against the reference
+5. rank meaningful differences
 
-Do not begin by randomly editing CSS.
+Do not start by randomly editing CSS.
 
 Keep the baseline available for regression comparison when practical.
 
----
+## 7. Use the Strongest Comparison Available
 
-## 6. Comparison Methods
+Useful techniques include:
 
-Use the strongest comparison method available.
-
-Useful methods include:
-
-1. side-by-side inspection
+1. side-by-side comparison
 2. opacity overlay / flicker comparison
-3. image-difference or pixel-diff visualization
-4. cropped region comparison
-5. browser / DOM measurements for geometry
-6. computed styles for implementation diagnosis
+3. image-diff visualization
+4. cropped-region comparison
+5. browser / DOM geometry measurements
+6. computed styles for diagnosis
 
-Automated visual metrics are evidence, not the objective.
+Automated pixel metrics are evidence, not the goal.
 
-Do not optimize blindly for raw pixel difference because differences may come from:
+Raw pixel difference can be affected by:
 
-- font rasterization
-- OS rendering
-- browser antialiasing
-- subpixel positioning
-- image compression
-- color management
-- dynamic content
+* font rasterization
+* antialiasing
+* operating system
+* browser rendering
+* subpixel positioning
+* color management
+* compression
+* dynamic content
 
-Use quantitative tools to locate and validate mismatches, then use visual judgment to determine whether they are meaningful.
+Use tools to identify differences, then judge whether they matter visually.
 
----
+## 8. Fix Global Before Local
 
-## 7. Compare Global Before Local
+Evaluate in this order:
 
-Always evaluate in this order:
+### V0 — Structure
 
-### Tier 1 — Structure
+* missing or extra major sections
+* wrong page architecture
+* incorrect column model
+* fundamentally wrong composition
 
-Check:
+### V1 — Major Visual Impact
 
-- section presence and order
-- header / sidebar / main / footer architecture
-- major container relationships
-- overall page composition
-
-### Tier 2 — Major Geometry
-
-Check:
-
-- content width
-- section heights
-- column ratios
-- grid structure
-- major padding and gaps
-- major alignment
-- dominant component sizing
-
-### Tier 3 — Typography and Wrapping
-
-Check:
-
-- font family or closest verified project font
-- size
-- weight
-- line-height
-- letter-spacing
-- wrapping
-- line count
-- rendered text-block dimensions
-- baseline relationships
-
-### Tier 4 — Color and Surface
-
-Check:
-
-- backgrounds
-- text contrast
-- borders
-- dividers
-- gradients
-- opacity
-- shadows
-- elevation
-
-### Tier 5 — Component Detail and Assets
-
-Check:
-
-- buttons
-- inputs
-- icons
-- avatars
-- badges
-- tabs
-- controls
-- image crop / fit / aspect ratio
-- logos and illustrations
-- selected / disabled / active states
-
-### Tier 6 — Micro Polish
-
-Only after higher tiers are correct, address:
-
-- 1–3px optical offsets
-- subtle radius differences
-- small icon alignment
-- shadow softness
-- tiny color drift
-- fine tracking
-
-Do not polish Tier 6 while Tier 1 or Tier 2 still contains obvious errors.
-
----
-
-## 8. Difference Classification
-
-Classify each meaningful mismatch by type:
-
-- STRUCTURE
-- GEOMETRY
-- TYPOGRAPHY
-- COLOR
-- SURFACE
-- ASSET
-- STATE
-- CONTENT
-- RESPONSIVE
-
-This is for diagnosis, not bureaucracy. Do not create separate entries for trivial symptoms of the same root cause.
-
----
-
-## 9. Visual Severity
-
-Use visual-specific severity labels to avoid confusion with software bug priority.
-
-### V0 — Structural
-A fundamental mismatch that prevents the page from matching at all.
-
-Examples:
-- missing major section
-- wrong one-column vs two-column architecture
-- fundamentally incorrect hero structure
-
-### V1 — High Visual Impact
-Immediately noticeable and materially affects page identity.
-
-Examples:
-- content container much too wide or narrow
-- dominant font clearly wrong
-- large section proportions wrong
-- major background or asset mismatch
+* content width
+* section proportions
+* major padding
+* dominant typography
+* primary assets
+* large background mismatches
 
 ### V2 — Noticeable
-Clearly visible during comparison but not structurally defining.
 
-Examples:
-- significant spacing drift
-- button or card sizing mismatch
-- incorrect line-height or wrapping
-- visibly wrong icon scale
+* meaningful spacing drift
+* component sizing
+* wrapping
+* line-height
+* icon scale
+* surface styling
 
 ### V3 — Cosmetic
-Primarily visible during close side-by-side inspection.
 
-Examples:
-- tiny optical offsets
-- subtle border-opacity differences
-- minor shadow differences
+* tiny optical offsets
+* subtle border opacity
+* minor shadow differences
+* small radius differences
 
-Prioritize V0 → V1 → V2 → V3.
+Do not polish V3 while V0 or V1 remains.
 
----
+## 9. Diagnose Root Causes
 
-## 10. Root-Cause First
+Do not automatically patch the nearest visible symptom.
 
-Do not patch the nearest symptom automatically.
+When several elements share the same mismatch, inspect shared causes such as:
 
-When many elements share the same mismatch, inspect shared causes first:
+* parent width
+* layout model
+* grid
+* spacing tokens
+* typography tokens
+* inherited styles
+* breakpoint
+* shared component style
+* asset crop rules
 
-- parent container width
-- layout model
-- grid columns
-- spacing tokens
-- typography tokens
-- inherited styles
-- breakpoints
-- shared component styles
-- asset crop rules
+Prefer one correct shared fix over many local compensating hacks.
 
-Prefer one change that correctly fixes multiple related mismatches over many local overrides.
+## 10. One Coherent Hypothesis Per Change Cluster
 
-Avoid creating layers of compensating hacks.
-
----
-
-## 11. One Coherent Hypothesis Per Change Cluster
-
-Group edits only when they test the same root-cause hypothesis.
+Group edits only when they test the same explanation.
 
 Example:
 
 ```text
 Hypothesis:
-The page feels too narrow because the main max-width and horizontal padding are both smaller than the reference.
+The page is too narrow because both the main max-width and horizontal padding differ from the reference.
 
 Change cluster:
 - main max-width
-- main horizontal padding
-
-Then re-render and compare.
+- horizontal padding
 ```
 
-Do not batch unrelated typography, spacing, colors, and component changes into one untraceable iteration.
+Then render again.
 
-Batching is acceptable when all edits belong to one coherent cause and can be judged together.
+Do not combine unrelated typography, colors, spacing, and component changes into one untraceable batch.
 
----
+## 11. Mandatory Visual Loop
 
-## 12. Mandatory Render Loop
-
-For every meaningful change cluster:
+In Full Visual Mode, every meaningful change cluster follows:
 
 ```text
 CAPTURE / OBSERVE
 ↓
 COMPARE
 ↓
-RANK DIFFERENCES
+RANK
 ↓
 IDENTIFY ROOT CAUSE
 ↓
@@ -358,300 +244,201 @@ ACCEPT / ADJUST / REVERT
 REPEAT
 ```
 
-After a change, classify the result:
+After each cluster classify the outcome:
 
-- IMPROVED
-- NEUTRAL
-- REGRESSED
+* IMPROVED
+* NEUTRAL
+* REGRESSED
 
-Do not continue stacking new changes on top of an unverified regression.
+Do not stack additional changes on top of an unverified regression.
 
----
+## 12. Acceptance Gate
 
-## 13. Acceptance Gate
+Accept a change only when:
 
-Accept a visual change only when:
+* the target mismatch materially improves
+* no higher-priority area regresses
+* no new V0 / V1 problem is introduced
+* relevant functionality remains intact
+* no relevant runtime regression appears
 
-- the target mismatch improves materially
-- no higher-priority region regresses
-- no new V0 / V1 mismatch is introduced
-- existing functionality remains intact
-- no relevant runtime regression appears
+If a fix improves a small detail but damages a more important region, reject or redesign it.
 
-If a change helps one small region but worsens a more important region, reject or redesign it.
+## 13. Typography and Wrapping
 
----
+Text wrapping is a high-value diagnostic signal.
 
-## 14. Regression Awareness
+If line count or text-block height differs, inspect:
 
-After modifying shared layout, typography, CSS variables, components, or breakpoints, inspect dependent regions as well as the intended target.
+* container width
+* actual font family
+* size
+* weight
+* letter spacing
+* line-height
 
-Examples:
+Do not insert manual line breaks or change copy merely to imitate wrapping unless the reference clearly requires it.
 
-- changing heading typography may alter hero height and the next section's position
-- changing container width may alter card wrapping and footer alignment
-- changing global line-height may alter the vertical rhythm of many sections
+## 14. Asset Fidelity
 
-Visual correctness is coupled. Validate system effects, not just local effects.
+For important assets compare:
 
----
-
-## 15. Text Wrapping Is a First-Class Signal
-
-When reference and implementation differ in line count or text-block height, investigate:
-
-- container width
-- actual font family
-- font size
-- font weight
-- letter spacing
-- line-height
-
-Do not insert manual line breaks or alter copy merely to imitate wrapping unless the reference clearly contains deliberate line breaks or the project requires them.
-
-Rendered text geometry is often a strong indicator of an incorrect layout or font assumption.
-
----
-
-## 16. Asset Fidelity
-
-For visually important assets, compare:
-
-- correct source asset
-- aspect ratio
-- crop
-- object-fit behavior
-- position
-- size
-- transparency
-- visual contrast where implementation controls it
+* correct source
+* dimensions
+* aspect ratio
+* crop
+* `object-fit`
+* position
+* transparency
 
 Prefer real project assets when available.
 
-Do not substitute generic placeholders for visually defining reference assets unless the original cannot be obtained.
+Do not replace visually defining assets with generic placeholders unless the original cannot reasonably be obtained.
 
----
-
-## 17. Avoid Blind Pixel Chasing
-
-The target is high visual fidelity produced by a maintainable UI, not a single-viewport screenshot hack.
+## 15. Avoid Screenshot Hacks
 
 Prefer:
 
-- semantic layout
-- grid / flexbox
-- max-width
-- reusable gap / padding tokens
-- project design primitives
+* semantic layout
+* Grid / Flexbox
+* max-width containers
+* reusable gap / spacing tokens
+* project design primitives
 
 Avoid:
 
-- absolute-position soup
-- dozens of isolated pixel nudges
-- screenshot backgrounds
-- duplicated magic numbers
-- hacks that destroy responsive behavior
+* absolute-position soup
+* screenshot backgrounds
+* dozens of isolated pixel nudges
+* duplicated magic numbers
+* single-viewport hacks that destroy responsive behavior
 
-Small optical corrections are acceptable after the underlying layout is correct.
+Small optical corrections are acceptable after the structural model is correct.
 
----
+## 16. Responsive Safety
 
-## 18. Responsive Verification
+If the project is responsive and the task is not explicitly fixed to a single viewport, sanity-check at least one additional representative viewport after the target viewport converges.
 
-If the project is responsive, or the user has not explicitly constrained the task to one fixed viewport, perform at least one additional representative viewport sanity check after the target viewport converges.
+The purpose is to detect regressions such as:
 
-The goal is not to make an unreferenced viewport visually identical to the reference. The goal is to ensure the fidelity fixes did not introduce:
+* overflow
+* overlap
+* clipped text
+* broken grids
+* inaccessible controls
 
-- overflow
-- overlap
-- clipped text
-- broken grids
-- inaccessible controls
+If multiple reference viewports are supplied, verify each one independently.
 
-If the user provides multiple reference viewports, each supplied viewport is ground truth and must be verified separately.
+Do not invent responsive requirements for an intentionally fixed-size product.
 
-If the product is intentionally fixed-size, do not invent responsive requirements.
+## 17. Runtime Sanity
 
----
+After final edits, check relevant runtime health when tooling permits:
 
-## 19. Runtime Sanity
+* console errors introduced by the change
+* uncaught exceptions
+* broken assets
+* framework warnings caused by the change
+* inaccessible overflow
 
-Visual convergence is not successful if the page is broken.
+Do not claim a runtime check was performed unless it actually was.
 
-Check relevant runtime health after the final edits:
+## 18. Stall Detection
 
-- console errors introduced by the changes
-- uncaught exceptions
-- broken image / asset loading
-- framework warnings related to the changes
-- visible overflow that makes content inaccessible
+If two consecutive change clusters fail to produce meaningful improvement, stop random tuning.
 
-Do not claim runtime checks were performed unless they actually were.
+Re-check assumptions such as:
 
----
+* viewport
+* DPR / zoom
+* reference scaling
+* font
+* container model
+* breakpoint
+* asset crop
+* inherited styles
+* whether symptoms rather than causes are being patched
 
-## 20. Convergence Stages
+Do not continue with directionless `+2px / -1px` adjustments without a new hypothesis.
 
-Use these internal stages when useful:
+## 19. Completion Gate
 
-### ROUGH
-Major structural mismatch remains.
+In Full Visual Mode, do not declare completion until:
 
-### SIMILAR
-Structure is mostly right but V1 / V2 differences remain.
+* V0 remaining = 0
+* V1 remaining = 0
+* major structure and proportions match closely
+* dominant typography and wrapping are close
+* important assets are handled correctly
+* required reference viewport(s) are verified
+* no obvious overflow / overlap remains
+* relevant runtime health is acceptable
+* a fresh final render was compared against the reference
 
-### CLOSE
-No major structural mismatch; several noticeable differences remain.
+Remaining V2 / V3 differences may be acceptable when they are dominated by:
 
-### HIGH FIDELITY
-No V0 / V1; only limited V2 / V3 differences remain.
+* unavailable proprietary fonts
+* unavailable source assets
+* unknown screenshot scaling
+* browser / OS rendering differences
+* compression / antialiasing
+* disproportionate regression risk
 
-### DIMINISHING RETURNS
-Remaining differences are dominated by reference limitations, unavailable assets, rendering-engine differences, or cosmetic V3 issues whose fixes create disproportionate regression risk.
+Do not use those reasons to excuse unresolved structural problems.
 
-Do not stop merely because the page “looks good.”
-
----
-
-## 21. Stall Detection
-
-If two consecutive change clusters fail to produce meaningful improvement, stop random tuning and re-check assumptions such as:
-
-- viewport
-- DPR / zoom
-- reference scaling
-- font
-- container architecture
-- layout model
-- asset crop
-- breakpoint selection
-- hidden inherited styles
-- whether you are treating symptoms instead of the root cause
-
-Do not continue with directionless `+2px / -1px / +3px` tuning without a new hypothesis.
-
----
-
-## 22. Final Comparison
-
-Before declaring completion:
-
-1. produce a fresh final render
-2. compare Reference vs Final from the top of the page again
-3. re-check major sections independently
-4. confirm no V0 or V1 mismatches remain
-5. review remaining V2 / V3 differences
-6. verify the required viewport(s)
-7. perform relevant runtime sanity checks
-
-Do not use an older iteration screenshot as final proof.
-
----
-
-## 23. Stop Conditions
-
-Stop only when all applicable conditions are true:
-
-- V0 remaining: 0
-- V1 remaining: 0
-- major structure and proportions match closely
-- dominant typography and wrapping are close
-- important assets are handled correctly
-- no obvious overflow or overlap remains
-- required target viewport(s) are verified
-- responsive sanity was checked when applicable
-- no relevant runtime regression was introduced
-- a fresh final comparison was performed
-- remaining differences are documented
-- further edits would mainly address V3 details, unavailable information, environment-specific rendering, or would create more regression risk than visual benefit
-
-A legitimate stopping reason is:
-
-> Remaining mismatch is dominated by unavailable or non-reproducible reference information rather than a known implementation error.
-
----
-
-## 24. Remaining Difference Register
-
-Record only real remaining differences that matter.
-
-Format:
-
-```text
-Remaining Difference:
-Severity: V2 | V3
-Why it remains:
-Can it realistically be improved?
-Risk of further modification:
-```
-
-Typical justified limits include:
-
-- unavailable proprietary font
-- unavailable source asset
-- unknown screenshot scaling
-- browser / OS font rasterization differences
-- antialiasing differences
-- compressed reference imagery
-
-Do not use these as excuses for unresolved structural problems.
-
----
-
-## 25. Completion Report
+## Final Report
 
 Keep the final response concise.
 
-Use:
+### Result
 
-# Result
+State:
 
-- comparison iterations performed
-- final convergence level
-- highest-impact categories fixed
-- target viewport(s) verified
-- additional viewport sanity check, if applicable
-- runtime / console status, if actually checked
+* comparison mode: Full Visual Mode | Limited Verification Mode
+* major categories fixed
+* reference viewport(s) checked
+* additional viewport checked, if applicable
+* relevant runtime status, if actually checked
+* final convergence level
 
-# Remaining Differences
+Suggested convergence labels:
 
-List only known remaining V2 / V3 differences and why they remain.
+* ROUGH
+* SIMILAR
+* CLOSE
+* HIGH FIDELITY
+* DIMINISHING RETURNS
 
-Do not claim `pixel-perfect` unless objective evidence genuinely supports it.
+`HIGH FIDELITY` may only be used after actual rendered comparison.
 
-Prefer:
+### Remaining Differences
 
-- `high-fidelity visual match`
-- `remaining differences are limited to minor cosmetic or rendering-environment differences`
+List only meaningful remaining V2 / V3 differences and why they remain.
 
----
+If actual render comparison was unavailable, include:
+
+```text
+VISUAL VERIFICATION REQUIRED
+```
+
+and state exactly what still requires visual confirmation.
 
 # Absolute Rule
 
-Never declare completion from code inspection or intuition alone when browser comparison is available.
+Never declare visual completion from code inspection or intuition alone when real browser comparison is available.
 
-The operating loop is:
+The operating model is:
 
 ```text
-Reference Screenshot
-        ↓
-Current Browser Render
-        ↓
-Difference Analysis
-        ↓
-Root Cause
-        ↓
-Targeted Fix
-        ↓
-New Browser Render
-        ↓
-Recomparison
-        ↓
-Accept / Adjust / Revert
-        ↓
-Convergence
+Reference
+→ Render
+→ Compare
+→ Diagnose
+→ Fix
+→ Re-render
+→ Recompare
+→ Accept / Adjust / Revert
+→ Converge
 ```
 
-Your goal is not to make the page “pretty similar.”
-
-Your goal is to reduce observable visual differences systematically and verify that they have converged without sacrificing functionality or maintainability.
+The goal is a verified high-fidelity interface, not a collection of CSS guesses.

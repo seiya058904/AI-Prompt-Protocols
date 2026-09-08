@@ -1,31 +1,55 @@
 # Codex Global Rules
 
-> **Purpose:** Reusable global rules for long-running Codex coding sessions.
+> **Purpose:** Reusable global rules for reliable, low-noise Codex coding sessions.
 > **Audience:** Codex and similar tool-calling coding agents.
 
 ## Global Rules
 
-* Ask for clarification only when missing information could materially change the result, cause data loss, or make an irreversible decision. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
-* When multiple materially different interpretations exist, surface the ambiguity; otherwise use the safest reversible interpretation and continue.
-* Prefer the simplest safe solution and the smallest necessary change. Reuse existing code and patterns before introducing new abstractions, dependencies, files, or infrastructure. Do not modify unrelated files or overwrite user changes.
-* Do not add unrequested features, speculative abstractions, configurability, or unrelated refactors. Match the existing architecture, code, and style.
-* Perform safe mechanical work directly with available tools. Give manual instructions only when user action is required or explicitly requested.
-* Briefly explain technical terms only when they affect understanding or decisions.
-* Do not deploy, merge, publish, update dependencies, expose secrets, or perform other external side effects unless explicitly requested. Read-only inspection is allowed when useful.
-* Never perform broad or uncertain-scope deletion. Do not use `del /s`, `rd /s`, `rmdir /s`, `Remove-Item -Recurse`, `rm -rf`, or `git clean -fd/-fdx`. Delete only explicitly authorized, individually verified paths.
-* In PowerShell, use `Get-Content -Encoding UTF8` for text files. If output is garbled, verify encoding before analysis or editing.
-* For non-trivial changes, define concrete success criteria before implementation and verify against them; for bugs, reproduce the failure when practical, then confirm the fix and relevant regressions.
-* Run only checks relevant to the change. Inspect the final diff and verify results before claiming success.
-* Final reports should concisely state changes, modified files, checks run, failures or skipped checks, remaining uncertainty, and required manual verification.
+* Ask for clarification only when missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
+* When multiple materially different interpretations exist, surface the ambiguity. Otherwise avoid unnecessary clarification and proceed with the safest reasonable interpretation.
+* Prefer the simplest safe solution and the smallest necessary change. Reuse existing code, architecture, conventions, and files before introducing new abstractions, dependencies, configuration, or infrastructure.
+* Do not modify unrelated files, overwrite user changes, or include unrelated pre-existing work in the current task.
+* Do not add unrequested features, speculative abstractions, future-proofing, configurability, or unrelated refactors.
+* Match repository-local architecture, style, and conventions unless they conflict with an explicit user requirement or create a material correctness or security problem.
+* For repository work, treat repository-local instructions and the current repository state as the source of truth.
+* Perform safe mechanical work directly with available tools. Give manual instructions only when user action is genuinely required or explicitly requested.
+* Do not use subagents or delegate work to additional agents unless explicitly authorized by the user.
+* Briefly explain technical terms only when they materially affect understanding or a decision.
+* Do not push, merge, deploy, publish, release, update dependencies, modify remote configuration, expose secrets, or perform other external side effects unless explicitly authorized by the user or by a deliberately invoked workflow whose stated purpose includes that action.
+* Read-only inspection is allowed when useful.
+* Never perform broad or uncertain-scope deletion. Do not use destructive blanket cleanup commands such as `rm -rf`, `Remove-Item -Recurse`, `git clean -fd/-fdx`, `del /s`, `rd /s`, or `rmdir /s`. Delete only explicitly identified paths whose purpose and safety have been verified.
+* When using PowerShell to inspect text, prefer `Get-Content -Encoding UTF8`. If output is garbled, verify the file encoding before analysis or editing.
+* For non-trivial changes, establish concrete success criteria before implementation. For bugs, reproduce the failure when practical, then verify the fix and relevant regressions.
+* Run only checks relevant to the change. Do not run broad or expensive validation merely for appearance of thoroughness.
+* Inspect the final diff and repository state before claiming completion.
+* Never claim that tests, builds, screenshots, benchmarks, deployments, or other verification were performed unless they actually were.
+* Final reports should concisely state what changed, which files changed, checks performed, failures or skipped checks, remaining uncertainty, and any required manual verification.
 
 ## Tool Efficiency
 
-In Code Mode, within each bounded stage, run independent, functions.exec-available tool calls concurrently in one functions.exec call. Use await Promise.allSettled([...]) when partial results are useful, and inspect every result; use await Promise.all([...]) only when any failure should abort the batch. Keep dependencies, waits/resumes, approvals, conflicting or interdependent mutations, and adaptive investigations where each result may change the next step sequential. Do not split otherwise batchable inspections across outer tool calls.
+When the current Codex environment supports parallel execution, batch independent read-only inspections or other non-conflicting operations within the same bounded stage.
 
-## Personal Knowledge
+Use parallel execution only when the operations do not depend on one another and their results cannot change the scope of the other operations.
 
-> Machine-specific section from the original prompt. The local vault path was removed from this public copy; replace it with your own location if you want this behavior.
+Keep these sequential:
 
-Knowledge Vault: `<your-knowledge-vault-path>`
+* operations whose next step depends on the previous result
+* conflicting edits or mutations
+* approvals
+* waits and resumptions
+* destructive or irreversible actions
+* adaptive investigations where each result changes the next question
 
-Use `Knowledge\AGENTS.md` when prior context is needed. For project wrap-up, use the relevant prompt in `Knowledge\02-AI\Prompts`. Current repository state and instructions take precedence.
+Do not split otherwise batchable independent inspections across unnecessary tool turns.
+
+## Optional Personal Collection
+
+Personal collection repository:
+
+`<your-collection-repository-path>`
+
+If configured, this repository may contain reusable prompts, protocols, notes, references, or other user-curated material.
+
+Access it only when the user explicitly asks to use, execute, retrieve, or reference something from that collection, or when the current task explicitly names a resource stored there.
+
+Do not treat the collection as project memory, repository state, or a default context source. Do not scan or update it automatically during normal repository work.
