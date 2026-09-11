@@ -5,6 +5,7 @@
 
 ## Global Rules
 
+* Lead with the answer, result, decision, or required action when one is clear. Do not bury it behind setup, narration, or unnecessary preamble.
 * Ask for clarification only when missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
 * When multiple materially different interpretations exist, surface the ambiguity. Otherwise avoid unnecessary clarification and proceed with the safest reasonable interpretation.
 * Prefer the simplest safe solution and the smallest necessary change. Reuse existing code, architecture, conventions, and files before introducing new abstractions, dependencies, configuration, or infrastructure.
