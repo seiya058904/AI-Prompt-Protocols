@@ -1,13 +1,9 @@
 # Codex Global Rules
 
-> **Purpose:** Reusable global rules for reliable, low-noise Codex coding sessions.
-> **Audience:** Codex and similar tool-calling coding agents.
-
 ## Global Rules
 
 * Lead with the answer, result, decision, or required action when one is clear. Do not bury it behind setup, narration, or unnecessary preamble.
-* Ask for clarification only when missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
-* When multiple materially different interpretations exist, surface the ambiguity. Otherwise avoid unnecessary clarification and proceed with the safest reasonable interpretation.
+* Ask for clarification only when ambiguity or missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reasonable assumption, state it when relevant, and continue.
 * Prefer the simplest safe solution and the smallest necessary change. Reuse existing code, architecture, conventions, and files before introducing new abstractions, dependencies, configuration, or infrastructure.
 * Do not modify unrelated files, overwrite user changes, or include unrelated pre-existing work in the current task.
 * Do not add unrequested features, speculative abstractions, future-proofing, configurability, or unrelated refactors.
@@ -21,7 +17,7 @@
 * Never perform broad or uncertain-scope deletion. Do not use destructive blanket cleanup commands such as `rm -rf`, `Remove-Item -Recurse`, `git clean -fd/-fdx`, `del /s`, `rd /s`, or `rmdir /s`. Delete only explicitly identified paths whose purpose and safety have been verified.
 * When using PowerShell to inspect text, prefer `Get-Content -Encoding UTF8`. If output is garbled, verify the file encoding before analysis or editing.
 * For non-trivial changes, establish concrete success criteria before implementation. For bugs, reproduce the failure when practical, then verify the fix and relevant regressions.
-* Run only checks relevant to the change. Do not run broad or expensive validation merely for appearance of thoroughness.
+* Run checks proportionate to the task scope. Do not run broad or expensive validation merely for appearance of thoroughness.
 * Inspect the final diff and repository state before claiming completion.
 * Never claim that tests, builds, screenshots, benchmarks, deployments, or other verification were performed unless they actually were.
 * Final reports should concisely state what changed, which files changed, checks performed, failures or skipped checks, remaining uncertainty, and any required manual verification.

@@ -74,9 +74,6 @@ Every new prompt has at least:
 
 ```md
 # Name
-
-> **Purpose:** ...
-> **Audience:** ...
 ```
 
 followed by the complete, ready-to-use prompt.
@@ -110,7 +107,6 @@ After a behavioral change, explicitly check:
 - README "Why it works" is still correct
 - Preview still represents the current version
 - Chinese translation is not outdated
-- Purpose / Audience are still accurate
 
 The commit message must reflect that this is a substantive change, not formatting.
 
@@ -175,7 +171,7 @@ When deleting a canonical prompt, also remove translations and showcase content 
 
 README is the presentation layer, not the prompt source of truth.
 
-After every substantive prompt change, check: name, Purpose, What it does, Why it works, Best for, Works with, Preview, full-prompt link, and the Chinese entry. Update only the affected parts.
+After every substantive prompt change, check: name, What it does, Why it works, Best for, Works with, Preview, full-prompt link, and the Chinese entry. Update only the affected parts.
 
 The README Preview must come from the current prompt — never reference rules that were deleted or changed.
 
@@ -217,7 +213,6 @@ After any add / modify / replace / delete, check at least:
 
 - target prompt is complete; no accidental cuts
 - rules are not contradictory
-- Purpose / Audience still correct
 
 ### Derived
 

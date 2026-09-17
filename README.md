@@ -30,7 +30,7 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 
 **Why it works.**
 
-- **Reversible assumptions over questions.** Ask for clarification only when missing information could cause data loss, an irreversible outcome, a materially different result, or require a genuine user choice; otherwise pick the safest reversible assumption and continue.
+- **Safe reasonable assumptions over questions.** Ask for clarification only when ambiguity or missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice; otherwise choose the safest reasonable assumption and continue.
 - **Smallest safe change.** Reuse existing code, architecture, and conventions before adding abstractions, dependencies, or infrastructure; no unrequested features, future-proofing, or unrelated refactors.
 - **Deletion blacklist.** Destructive blanket cleanup commands such as `del /s`, `rd /s`, `rmdir /s`, `Remove-Item -Recurse`, `rm -rf`, and `git clean -fd/-fdx` are never used; only explicitly identified and verified paths may be deleted.
 - **External side-effect gate.** Push, merge, deploy, publish, release, dependency updates, and remote configuration changes require explicit authorization or a deliberately invoked workflow whose purpose includes that action.
@@ -47,9 +47,9 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 <summary>Preview</summary>
 
 ```text
-* Ask for clarification only when missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
+* Ask for clarification only when ambiguity or missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reasonable assumption, state it when relevant, and continue.
 * Never perform broad or uncertain-scope deletion. Do not use destructive blanket cleanup commands such as `rm -rf`, `Remove-Item -Recurse`, `git clean -fd/-fdx`, `del /s`, `rd /s`, or `rmdir /s`. Delete only explicitly identified paths whose purpose and safety have been verified.
-* Run only checks relevant to the change. Do not run broad or expensive validation merely for appearance of thoroughness.
+* Run checks proportionate to the task scope. Do not run broad or expensive validation merely for appearance of thoroughness.
 ```
 
 </details>
@@ -76,7 +76,7 @@ The Chinese mirror of this page lives at [README.zh-CN.md](README.zh-CN.md). The
 <summary>Preview</summary>
 
 ```text
-* Ask for clarification only when missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reversible assumption, state it when relevant, and continue.
+* Ask for clarification only when ambiguity or missing information could materially change the result, cause data loss, create an irreversible outcome, or require a genuine user choice. Otherwise choose the safest reasonable assumption, state it when relevant, and continue.
 * Never perform broad or uncertain-scope deletion. Avoid destructive blanket cleanup commands and delete only explicitly identified paths whose purpose and safety have been verified.
 
 When the environment supports parallel execution, batch independent inspections or other non-conflicting operations within the same bounded stage.

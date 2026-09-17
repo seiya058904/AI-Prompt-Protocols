@@ -1,8 +1,5 @@
 # Universal Agent Init
 
-> **Purpose:** Initialize or improve a repository's persistent agent instructions (`AGENTS.md` / `CLAUDE.md`) from repository evidence, keeping them lean and verified.
-> **Audience:** Coding agents asked to set up or refine repository agent instructions (Codex, Claude Code, Cursor, and similar).
-
 Initialize or improve this repository's persistent AI-agent instructions.
 
 Leave the repository with a concise, accurate root `AGENTS.md` for shared guidance and a root `CLAUDE.md` as the Claude Code entry point. Preserve useful existing instructions, avoid duplication, verify what you add, and locally commit only task-owned changes.

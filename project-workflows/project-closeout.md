@@ -1,8 +1,5 @@
 # 项目收工提示词
 
-> **Purpose:** 在用户明确要求“收工 / 收尾”时，将本轮 Git 成果安全收敛到仓库既有工作流允许的最终状态。
-> **Audience:** Codex、Claude Code、Cursor 等 coding agents。
-
 ## 触发条件
 
 只有当用户明确表示：
