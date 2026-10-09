@@ -1,90 +1,138 @@
-# AI Prompt Protocols
+<h1 align="center">🧭 AI Prompt Protocols</h1>
 
-**Less improvisation. More reproducible agent work.**
+<p align="center">
+  <strong>Less improvisation. More reproducible agent work.</strong>
+</p>
 
-A focused, maintained library of plain-text prompts and engineering protocols for real-world AI-assisted development. Each protocol has a purpose, a recommended phase and a source document you can copy into your own workflow.
+<p align="center">
+  A small, maintained field guide for AI-assisted software development.<br>
+  Seven focused protocols. Clear boundaries. Evidence before confidence.
+</p>
 
-[**English**](README.md) · [简体中文](README.zh-CN.md) · [Choose a protocol](#start-with-the-task) · [Maintenance policy](MAINTENANCE.md)
+<p align="center">
+  <a href="README.md"><strong>English</strong></a>
+  &nbsp;·&nbsp;
+  <a href="README.zh-CN.md">简体中文</a>
+  &nbsp;·&nbsp;
+  <a href="#start-with-the-task">🗂️ Find a Protocol</a>
+  &nbsp;·&nbsp;
+  <a href="#putting-them-together">🔁 Workflow</a>
+  &nbsp;·&nbsp;
+  <a href="MAINTENANCE.md">⚙️ Maintenance</a>
+</p>
 
-> Not a prompt marketplace, benchmark claim or universal agent framework. These are working documents refined in real projects; choose the **smallest protocol that fits the task**.
+<p align="center">
+  <sub>GLOBAL RULES &nbsp;·&nbsp; UI FIDELITY &nbsp;·&nbsp; CODE REVIEW &nbsp;·&nbsp; REPOSITORY SETUP &nbsp;·&nbsp; PROJECT CLOSEOUT</sub>
+</p>
+
+---
+
+> **Choose the smallest protocol that fits the moment.**
+>
+> This is not a prompt marketplace, a claim of benchmark superiority, or a universal agent framework. The documents are practical instructions refined around real engineering work—not substitutes for reading the repository, testing a change, or obtaining permission for side effects.
 
 ## Start with the task
 
-**Pick the moment, not the longest prompt.** This library separates persistent behavior rules from one-shot task protocols.
+Every document has a job. **Persistent rules establish how an agent works; task protocols guide one phase of the work.** They should not all be pasted into every session.
 
-| Your task | Start here | When to use it |
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>01 / Establish the Rules</h3>
+      <p><sub>PERSISTENT AGENT BEHAVIOR</sub></p>
+      <p>Keep changes narrow, preserve existing work, and require evidence for claims.</p>
+      <p><a href="agent-rules/codex-global-rules.md"><strong>Codex Global Rules →</strong></a><br><a href="agent-rules/universal-coding-agent-global-rules.md">Universal Coding Agent Rules →</a></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>02 / Make the Interface Match</h3>
+      <p><sub>DESIGN EVIDENCE → REAL RENDER</sub></p>
+      <p>Extract a faithful UI specification, then refine the actual implementation against its reference.</p>
+      <p><a href="ui-workflows/ui-screenshot-to-implementation-spec.md"><strong>Screenshot → Spec →</strong></a><br><a href="ui-workflows/ui-visual-fidelity-refinement.md">Visual Fidelity Refinement →</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>03 / Establish Confidence</h3>
+      <p><sub>REAL REPOSITORY · ACTIONABLE FINDINGS</sub></p>
+      <p>Build project-specific instructions from verified facts; review code without inventing defects.</p>
+      <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/expert-code-review.md">Expert Code Review →</a></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>04 / Finish Without Losing Work</h3>
+      <p><sub>VALIDATION · DIFF · AUTHORIZATION</sub></p>
+      <p>Inspect the real working tree, complete proportionate verification, and perform only permitted integration actions.</p>
+      <p><a href="project-workflows/project-closeout.md"><strong>Project Closeout →</strong></a></p>
+    </td>
+  </tr>
+</table>
+
+| Task | Recommended starting point | When |
 | --- | --- | --- |
-| **Keep Codex sessions predictable** | [Codex Global Rules](agent-rules/codex-global-rules.md) | Persistent Codex-specific instructions |
-| **Use different coding agents consistently** | [Universal Coding Agent Global Rules](agent-rules/universal-coding-agent-global-rules.md) | Persistent tool-agnostic instructions |
-| **Turn a screenshot into an implementation plan** | [UI Screenshot → Implementation Spec](ui-workflows/ui-screenshot-to-implementation-spec.md) | **Before** building an interface |
-| **Bring a rendered UI closer to its reference** | [UI Visual Fidelity Refinement](ui-workflows/ui-visual-fidelity-refinement.md) | **After** the first implementation |
-| **Close out finished work safely** | [Project Closeout](project-workflows/project-closeout.md) | After tests, diff review and integration decisions |
-| **Review code without speculative noise** | [Expert Code Review](review-workflows/expert-code-review.md) | Before approving a change or merge |
-| **Set up project-specific agent guidance** | [Universal Agent Init](init-workflows/universal-agent-init.md) | At repository initialization or audit |
+| Predictable Codex sessions | [Codex Global Rules](agent-rules/codex-global-rules.md) | Persistent Codex instructions |
+| Consistent cross-agent behavior | [Universal Coding Agent Global Rules](agent-rules/universal-coding-agent-global-rules.md) | Persistent, tool-independent instructions |
+| Interpret a screenshot | [UI Screenshot → Implementation Spec](ui-workflows/ui-screenshot-to-implementation-spec.md) | Before implementation |
+| Match a reference image | [UI Visual Fidelity Refinement](ui-workflows/ui-visual-fidelity-refinement.md) | After a working first render |
+| Finish a scoped task | [Project Closeout](project-workflows/project-closeout.md) | After verification and diff review |
+| Review a change | [Expert Code Review](review-workflows/expert-code-review.md) | Before approving or merging |
+| Set up repository guidance | [Universal Agent Init](init-workflows/universal-agent-init.md) | On project adoption or instruction audit |
 
 ## Protocols in context
 
+The files linked below are the **authoritative prompts**. This README is the map—not a second, abbreviated copy to give an agent instead of the real document.
+
 ### Codex Global Rules
 
-**For:** Codex coding sessions that need predictable boundaries, focused changes and evidence-led verification.
+**Use when:** a Codex session needs stable expectations around scope, edits, testing, and external actions. It emphasizes the smallest safe change, preservation of existing work, proportionate checks, and accurate completion reports.
 
-- Ask clarifying questions only for material uncertainty; choose safe, disclosed assumptions otherwise.
-- Avoid broad destructive cleanup and unauthorized external actions.
-- Inspect what changed, run proportionate checks and distinguish validation from claims.
-
-**Read:** [English source](agent-rules/codex-global-rules.md) · [中文译文](translations/zh-CN/agent-rules/codex-global-rules.md)
+**Read:** [English source](agent-rules/codex-global-rules.md) · [Chinese translation](translations/zh-CN/agent-rules/codex-global-rules.md)
 
 ### Universal Coding Agent Global Rules
 
-**For:** A shared behavioral baseline across Codex, Claude Code, Cursor and other coding agents.
+**Use when:** the same working principles must survive a change of coding assistant. The rules avoid assuming one tool interface, while retaining explicit boundaries for destructive operations, repository state, and permission to act.
 
-The same central safety and quality constraints as the Codex rules, expressed without relying on a Codex-only tool interface. Independent read-only checks can be batched where the environment supports it; operations with side effects remain controlled.
-
-**Read:** [English source](agent-rules/universal-coding-agent-global-rules.md) · [中文译文](translations/zh-CN/agent-rules/universal-coding-agent-global-rules.md)
+**Read:** [English source](agent-rules/universal-coding-agent-global-rules.md) · [Chinese translation](translations/zh-CN/agent-rules/universal-coding-agent-global-rules.md)
 
 ### UI Screenshot → Implementation Spec Protocol
 
-**For:** Turning screenshots or mockups into a specification that an implementation agent can follow.
+**Use before coding.** Translate supplied screenshots into a specification that another agent can implement. Separate what is visible from what is only estimated or inferred; document the layout relationships and the gaps that the reference cannot prove.
 
-It separates **OBSERVED**, **ESTIMATED**, **INFERRED** and **UNKNOWN** details, builds a coherent model of layout and responsive relationships, ranks fidelity constraints, and explicitly records missing evidence. This protocol produces a **specification**, not implementation code.
+**Output:** a grounded implementation specification, **not** generated UI code.
 
 **Read:** [Source protocol](ui-workflows/ui-screenshot-to-implementation-spec.md)
 
 ### UI Visual Fidelity Refinement Protocol
 
-**For:** Iterative convergence between a real rendered interface and an actual visual reference.
+**Use after the first real render.** Compare the rendered page with its reference, prioritize meaningful mismatches, find their causes, then edit a coherent cluster and render again.
 
 ```text
-Capture → Compare → Prioritize → Find the root cause
-        → Change one coherent cluster → Render again
-        → Accept / adjust / revert
+Reference + current render
+            ↓
+       Compare the evidence
+            ↓
+     Fix a meaningful cause
+            ↓
+   Render again → keep / revise / revert
 ```
 
-The rendered page is the evidence. If the tools cannot capture or compare the real result, the protocol requires transparent limited verification rather than fabricated visual success.
+If a browser or screenshot comparison is unavailable, the protocol requires **an explicit verification limitation**, not a claim of visual success.
 
 **Read:** [Source protocol](ui-workflows/ui-visual-fidelity-refinement.md)
 
 ### Project Closeout Prompt
 
-**For:** Finishing a scoped development task without losing work or pushing to the wrong place.
+**Use only when explicitly invoked.** This Chinese-language protocol distinguishes ordinary status checks from an authorized request to finish and integrate work. It reviews changes and validation before proceeding with permitted Git operations; destructive or production-affecting actions require their own approval.
 
-Inspect repository state and its real integration model, validate task-owned changes, check the diff, then carry out **only authorized** commits, synchronization, releases or deployment actions. Completion means the work reached its intended safe state, not merely that a commit exists.
-
-**Read:** [中文原文](project-workflows/project-closeout.md)
+**Read:** [Chinese canonical source](project-workflows/project-closeout.md)
 
 ### Expert Code Review Protocol
 
-**For:** High-signal code review before accepting changes.
-
-Only report findings that are evidence-supported, discrete, actionable and materially relevant. Separate confirmed problems from **Needs Verification**. Prefer no finding to a speculative bug report and avoid repeating the same issue under multiple labels.
+**Use before accepting a change.** Report issues that are supported by evidence, specific enough to fix, materially relevant, and not duplicates. Separate a confirmed finding from a question that **needs verification**; zero invented findings is better than a long speculative report.
 
 **Read:** [Source protocol](review-workflows/expert-code-review.md)
 
 ### Universal Agent Init
 
-**For:** Bootstrapping or reconciling `AGENTS.md` and `CLAUDE.md` using the *actual* project.
-
-It reads code, tests and commands before documenting them, preserves existing instructions and user changes, avoids generic boilerplate, and does not assume that a missing instruction file justifies a large template.
+**Use when adopting or auditing a repository.** Inspect the actual source, commands, tests, and existing instructions before updating `AGENTS.md` or `CLAUDE.md`. Preserve valuable guidance and user changes instead of pasting a generic template.
 
 **Read:** [Source protocol](init-workflows/universal-agent-init.md)
 
@@ -93,46 +141,50 @@ It reads code, tests and commands before documenting them, preserves existing in
 ```text
 Global behavior rules
         ↓
-Actual repository context and instructions
+Repository facts and existing instructions
         ↓
-Task-specific protocol
+One task-specific protocol, when appropriate
         ↓
-Implementation / inspection
+Implement or inspect
         ↓
-Verification and diff review
+Verify evidence and review the diff
         ↓
 Authorized closeout
 ```
 
-**Examples:** Screenshot work uses **Spec → Implement → Visual Fidelity**. A pre-merge audit uses **Expert Code Review**. A newly adopted repository may begin with **Universal Agent Init**. Persistent global rules are not substitutes for project-specific facts or permissions.
+**Example paths:** *Screenshot → Spec → Implementation → Fidelity Refinement.* Or *Change → Expert Review → Verified Closeout.* The protocols complement real project instructions; they never override explicit permissions or facts on disk.
 
 ## How to use a protocol
 
-Use the linked Markdown file as the authoritative prompt; the descriptions here are only a map.
-
-1. **Read the source.** Each Markdown document is self-contained for its intended task; the README is a catalog, not the canonical prompt text.
-2. **Choose the right scope.** Global rules belong in an appropriate instruction context; phase protocols are invoked when that phase starts.
-3. **Check the target agent.** Whether an agent automatically reads `AGENTS.md`, `CLAUDE.md` or another file depends on the product; do not assume universal native support.
-4. **Verify in your own environment.** A protocol improves execution discipline but does not guarantee correctness or performance.
+1. **Open the canonical Markdown file.** Each phase protocol is designed to stand alone; this index cannot replace it.
+2. **Place it in the right context.** Global rules may belong in persistent instructions; a review or visual-refinement protocol is for the relevant task.
+3. **Check your agent's conventions.** Automatic loading of `AGENTS.md`, `CLAUDE.md`, and other instruction files depends on the tool, not on a universal standard.
+4. **Verify the outcome yourself.** A disciplined prompt does not guarantee correct code, an accurate review, or a matching visual result.
 
 ## File map
 
 ```text
-agent-rules/          Persistent coding-agent rules
-ui-workflows/         Screenshot specifications and rendered-UI refinement
-project-workflows/    Project closeout
-review-workflows/     Expert code review
-init-workflows/       Agent instruction initialization
-translations/zh-CN/   Chinese translations of the English global rules
-README.md            English showcase
-README.zh-CN.md      Chinese mirror, same headings and anchors
-MAINTENANCE.md       Canonical/derived content lifecycle
+agent-rules/          Codex-specific and universal persistent rules
+ui-workflows/         Screenshot specification and visual refinement
+project-workflows/    Deliberate, authorized task closeout
+review-workflows/     Evidence-led code review
+init-workflows/       AGENTS.md / CLAUDE.md initialization
+translations/zh-CN/   Chinese translations of canonical English rules
+README.md            English navigation and protocol showcase
+README.zh-CN.md      Chinese mirror with matching headings / anchors
+MAINTENANCE.md       Canonical-source and translation lifecycle
 ```
 
 ## Contributing
 
-Useful contributions are concrete: a reproducible ambiguity, a verified improvement, a translation correction or a real-world failure case. Avoid bulk-generated prompt collections and unsupported claims of universal effectiveness. Follow [MAINTENANCE.md](MAINTENANCE.md); canonical prompts are curated and should not be rewritten without a specific reason.
+The most valuable improvement is **a specific, reproducible failure or a verified correction**. Document the context, why the protocol was insufficient, and the smallest change that solves it. Keep source files authoritative and the English/Chinese README navigation aligned.
+
+See [MAINTENANCE.md](MAINTENANCE.md) for canonical-versus-derived content, translations, stable paths, and review requirements. Avoid speculative prompt expansion, duplicate `-v2` files, and claims of universal effectiveness.
 
 ## License
 
-[MIT](LICENSE) · Maintained as a small, high-signal plain-text repository.
+Released under the **[MIT License](LICENSE)**. This is a small, plain-text protocol library—no application, build system, or installation step is required.
+
+---
+
+<p align="center"><sub>LESS IMPROVISATION. MORE EVIDENCE. WORK THAT CAN BE REVIEWED.</sub></p>
