@@ -12,7 +12,7 @@
 <p align="center">
   <a href="README.md"><strong>English</strong></a>
   &nbsp;·&nbsp;
-  <a href="README.zh-CN.md">简体中文</a>
+  <a href="README.zh-CN.md">Simplified Chinese</a>
   &nbsp;·&nbsp;
   <a href="#start-with-the-task">🗂️ Find a Protocol</a>
   &nbsp;·&nbsp;
