@@ -6,7 +6,7 @@
 
 <p align="center">
   一套持续维护的 AI 辅助软件开发工程协议手册。<br>
-  七份聚焦具体任务的协议，明确的操作边界，以证据支撑结论。
+  十份聚焦具体任务的协议，明确的操作边界，以证据支撑结论。
 </p>
 
 <p align="center">
@@ -55,13 +55,13 @@
       <h3>03 / Establish Confidence</h3>
       <p><sub>真实仓库 · 可执行审查结果</sub></p>
       <p>根据实际源码建立项目级 Agent 指令；审查代码时不虚构缺陷。</p>
-      <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/expert-code-review.md">Expert Code Review →</a></p>
+      <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/expert-code-review.md">Expert Code Review →</a><br><a href="review-workflows/repository-audit.md">Repository Audit →</a></p>
     </td>
     <td width="50%" valign="top">
       <h3>04 / Finish Without Losing Work</h3>
       <p><sub>验证 · DIFF · 授权边界</sub></p>
       <p>检查真实工作区、完成与任务相称的验证，并且只执行已获得授权的集成操作。</p>
-      <p><a href="project-workflows/project-closeout.md"><strong>Project Closeout →</strong></a></p>
+      <p><a href="project-workflows/project-closeout.md"><strong>Project Closeout →</strong></a><br><a href="project-workflows/repository-audit-repair-closeout.md">Audit, Repair &amp; Closeout →</a><br><a href="project-workflows/local-recycle-bin-cleanup.md">Local Recycle Bin Cleanup →</a></p>
     </td>
   </tr>
 </table>
@@ -75,6 +75,9 @@
 | 完成一次有明确范围的工程任务 | [Project Closeout](project-workflows/project-closeout.md) | 测试、Diff 检查与集成决策之后 |
 | 审查代码或待合并变更 | [Expert Code Review](review-workflows/expert-code-review.md) | 批准或合并变更之前 |
 | 建立或修订仓库 Agent 指令 | [Universal Agent Init](init-workflows/universal-agent-init.md) | 接手仓库或审计现有指令时 |
+| 对整个仓库做独立体检 | [Repository Audit](review-workflows/repository-audit.md) | 只调查和验证，不执行修复 |
+| 接手仓库并完成审计、修复与交付 | [Repository Audit, Repair & Closeout](project-workflows/repository-audit-repair-closeout.md) | 明确授权后的执行与 Git 交付 |
+| 安全审计本地文件清理候选 | [Local Recycle Bin Cleanup](project-workflows/local-recycle-bin-cleanup.md) | 先只读审计，再按用户选择移送回收站 |
 
 ## Protocols in context
 
@@ -136,6 +139,30 @@
 
 **阅读：** [权威协议原文](init-workflows/universal-agent-init.md)
 
+### Repository Audit Protocol
+
+**用于整仓体检，而非只审查一次 Diff。** 固定审计 commit SHA，建立适用领域覆盖表，复现候选缺陷，并区分运行确认、静态证明和仍需验证的线索。本协议不授权修复或远端变更。
+
+**交付物：** 按优先级排列的问题、复现证据、覆盖范围与验证限制。使用前填写目标仓库。
+
+**阅读：** [中文权威原文](review-workflows/repository-audit.md)
+
+### Repository Audit, Repair & Closeout
+
+**只有明确授权 Agent 接手当前仓库时才使用。** 在整仓审计基础上执行已确认问题的修复、回归验证、提交、远端交付和最终工作区核验；保护已有工作，并区分代码同步与生产发布。
+
+**授权范围：** 明确调用包含向核实后的既有远端推送，以及在权限允许、审核门禁均满足时完成 PR 集成。调用前先阅读范围；收录到本库本身不会执行这些操作。
+
+**阅读：** [中文权威原文](project-workflows/repository-audit-repair-closeout.md)
+
+### Local Recycle Bin Cleanup
+
+**用于需要先了解后果的本地项目文件或磁盘清理。** Agent 先对指定范围只读审计，解释候选项用途、体积、移走后果与恢复条件；用户选择后，才复核边界并将对应对象移送系统回收站。
+
+**安全边界：** 不永久删除、不清空回收站；移送体积不等于已释放空间。需要能够访问真实本机文件，并具备受支持的系统回收机制。
+
+**阅读：** [中文权威原文](project-workflows/local-recycle-bin-cleanup.md)
+
 ## Putting them together
 
 ```text
@@ -166,8 +193,8 @@
 ```text
 agent-rules/          Codex 专用与通用全局规则
 ui-workflows/         截图规格与视觉保真精修
-project-workflows/    经明确触发和授权的项目收口
-review-workflows/     证据驱动的代码审查
+project-workflows/    项目收口、整仓审计修复交付与本地安全清理
+review-workflows/     证据驱动的代码审查与独立整仓审计
 init-workflows/       AGENTS.md / CLAUDE.md 初始化
 translations/zh-CN/   权威英文全局规则的中文译文
 README.md            英文协议导览

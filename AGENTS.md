@@ -9,8 +9,8 @@ AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, codi
 - `MAINTENANCE.md` — prompt lifecycle and maintenance rules.
 - `agent-rules/` — global behavioral rule sets (English): `codex-global-rules.md` and the tool-agnostic `universal-coding-agent-global-rules.md`. Chinese translations live in `translations/zh-CN/agent-rules/`.
 - `ui-workflows/` — UI screenshot → implementation spec, and UI visual fidelity refinement (English).
-- `project-workflows/project-closeout.md` — Git closeout / handoff protocol (Chinese).
-- `review-workflows/expert-code-review.md` — high-signal code review protocol (English).
+- `project-workflows/` — Git closeout / handoff, repository audit–repair–delivery, and user-selected local recycle-bin cleanup (Chinese).
+- `review-workflows/` — high-signal code review (English) and independent whole-repository audit (Chinese).
 - `init-workflows/universal-agent-init.md` — AGENTS.md / CLAUDE.md bootstrap protocol (English).
 - `README.md` — English home page; `README.zh-CN.md` — Chinese mirror with the same information architecture.
 

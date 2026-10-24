@@ -6,7 +6,7 @@
 
 <p align="center">
   A small, maintained field guide for AI-assisted software development.<br>
-  Seven focused protocols. Clear boundaries. Evidence before confidence.
+  Ten focused protocols. Clear boundaries. Evidence before confidence.
 </p>
 
 <p align="center">
@@ -55,13 +55,13 @@ Every document has a job. **Persistent rules establish how an agent works; task 
       <h3>03 / Establish Confidence</h3>
       <p><sub>REAL REPOSITORY · ACTIONABLE FINDINGS</sub></p>
       <p>Build project-specific instructions from verified facts; review code without inventing defects.</p>
-      <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/expert-code-review.md">Expert Code Review →</a></p>
+      <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/expert-code-review.md">Expert Code Review →</a><br><a href="review-workflows/repository-audit.md">Repository Audit →</a></p>
     </td>
     <td width="50%" valign="top">
       <h3>04 / Finish Without Losing Work</h3>
       <p><sub>VALIDATION · DIFF · AUTHORIZATION</sub></p>
       <p>Inspect the real working tree, complete proportionate verification, and perform only permitted integration actions.</p>
-      <p><a href="project-workflows/project-closeout.md"><strong>Project Closeout →</strong></a></p>
+      <p><a href="project-workflows/project-closeout.md"><strong>Project Closeout →</strong></a><br><a href="project-workflows/repository-audit-repair-closeout.md">Audit, Repair &amp; Closeout →</a><br><a href="project-workflows/local-recycle-bin-cleanup.md">Local Recycle Bin Cleanup →</a></p>
     </td>
   </tr>
 </table>
@@ -75,6 +75,9 @@ Every document has a job. **Persistent rules establish how an agent works; task 
 | Finish a scoped task | [Project Closeout](project-workflows/project-closeout.md) | After verification and diff review |
 | Review a change | [Expert Code Review](review-workflows/expert-code-review.md) | Before approving or merging |
 | Set up repository guidance | [Universal Agent Init](init-workflows/universal-agent-init.md) | On project adoption or instruction audit |
+| Audit an entire repository | [Repository Audit](review-workflows/repository-audit.md) | Independent investigation without repairs |
+| Audit, repair, and deliver a repository | [Repository Audit, Repair & Closeout](project-workflows/repository-audit-repair-closeout.md) | Explicitly authorized execution and Git delivery |
+| Review local cleanup candidates | [Local Recycle Bin Cleanup](project-workflows/local-recycle-bin-cleanup.md) | Read-only audit, then user-selected recycling |
 
 ## Protocols in context
 
@@ -136,6 +139,30 @@ If a browser or screenshot comparison is unavailable, the protocol requires **an
 
 **Read:** [Source protocol](init-workflows/universal-agent-init.md)
 
+### Repository Audit Protocol
+
+**Use for a whole-repository health check, rather than a review of one diff.** Pin the audit to a commit SHA, map applicable areas, reproduce candidate defects, and separate runtime confirmation, static proof, and findings that still need verification. The audit does not authorize repairs or remote mutations.
+
+**Output:** prioritized findings, reproduction evidence, coverage, and verification limits. Fill in the target repository before use.
+
+**Read:** [Chinese canonical source](review-workflows/repository-audit.md)
+
+### Repository Audit, Repair & Closeout
+
+**Use only when explicitly authorizing an agent to take over the current repository.** This execution protocol adds confirmed repairs, regression checks, commits, remote delivery, and final workspace verification to a full audit. It preserves pre-existing work and distinguishes code synchronization from production release.
+
+**Authorization:** explicit invocation includes pushing to the verified existing remote and, where permitted and all review gates are satisfied, PR integration. Read its scope before invoking it; adding it to this library does not execute it.
+
+**Read:** [Chinese canonical source](project-workflows/repository-audit-repair-closeout.md)
+
+### Local Recycle Bin Cleanup
+
+**Use when local project files or disk usage need an informed cleanup decision.** The agent first audits a specified scope and explains each candidate's purpose, size, consequences, and recovery conditions. Only candidates selected by the user may then be moved to the system recycle bin after a fresh boundary check.
+
+**Safety boundary:** no permanent deletion or emptying the recycle bin. Moving files to the recycle bin is not proof of freed disk space. Requires access to the actual host files and a supported system recycling mechanism.
+
+**Read:** [Chinese canonical source](project-workflows/local-recycle-bin-cleanup.md)
+
 ## Putting them together
 
 ```text
@@ -166,8 +193,8 @@ Authorized closeout
 ```text
 agent-rules/          Codex-specific and universal persistent rules
 ui-workflows/         Screenshot specification and visual refinement
-project-workflows/    Deliberate, authorized task closeout
-review-workflows/     Evidence-led code review
+project-workflows/    Task closeout, audit-to-repair delivery, and local cleanup
+review-workflows/     Evidence-led code review and independent repository audit
 init-workflows/       AGENTS.md / CLAUDE.md initialization
 translations/zh-CN/   Chinese translations of canonical English rules
 README.md            English navigation and protocol showcase
