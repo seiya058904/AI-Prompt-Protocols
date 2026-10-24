@@ -10,10 +10,6 @@
 </p>
 
 <p align="center">
-  <a href="README.md"><strong>English</strong></a>
-  &nbsp;·&nbsp;
-  <a href="README.zh-CN.md">Simplified Chinese</a>
-  &nbsp;·&nbsp;
   <a href="#start-with-the-task">🗂️ Find a Protocol</a>
   &nbsp;·&nbsp;
   <a href="#putting-them-together">🔁 Workflow</a>
@@ -82,6 +78,8 @@ Every document has a job. **Persistent rules establish how an agent works; task 
 ## Protocols in context
 
 The files linked below are the **authoritative prompts**. This README is the map—not a second, abbreviated copy to give an agent instead of the real document.
+
+Navigation and explanations are in English. Prompts are presented in their original language; no translated copy is required. Existing optional translations remain available where linked.
 
 ### Codex Global Rules
 
@@ -198,15 +196,14 @@ review-workflows/     Evidence-led code review and independent repository audit
 init-workflows/       AGENTS.md / CLAUDE.md initialization
 translations/zh-CN/   Chinese translations of canonical English rules
 README.md            English navigation and protocol showcase
-README.zh-CN.md      Chinese mirror with matching headings / anchors
-MAINTENANCE.md       Canonical-source and translation lifecycle
+MAINTENANCE.md       Prompt lifecycle and language policy
 ```
 
 ## Contributing
 
-The most valuable improvement is **a specific, reproducible failure or a verified correction**. Document the context, why the protocol was insufficient, and the smallest change that solves it. Keep source files authoritative and the English/Chinese README navigation aligned.
+The most valuable improvement is **a specific, reproducible failure or a verified correction**. Document the context, why the protocol was insufficient, and the smallest change that solves it. Keep source files authoritative and the English README accurate.
 
-See [MAINTENANCE.md](MAINTENANCE.md) for canonical-versus-derived content, translations, stable paths, and review requirements. Avoid speculative prompt expansion, duplicate `-v2` files, and claims of universal effectiveness.
+See [MAINTENANCE.md](MAINTENANCE.md) for canonical-versus-derived content, language policy, stable paths, and review requirements. Avoid speculative prompt expansion, duplicate `-v2` files, and claims of universal effectiveness.
 
 ## License
 

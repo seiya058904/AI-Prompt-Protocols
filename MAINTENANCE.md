@@ -2,7 +2,7 @@
 
 Prompt lifecycle and long-term maintenance rules for this repository.
 
-These rules govern how prompts are added, modified, replaced, renamed, translated, synced, deprecated, and deleted. Keep them simple — Git history, clear commits, and stable paths are the version system.
+These rules govern how prompts are added, modified, replaced, renamed, presented, deprecated, and deleted. Keep them simple — Git history, clear commits, and stable paths are the version system.
 
 ## 1. Source of Truth
 
@@ -22,11 +22,9 @@ init-workflows/
 
 Derived from canonical prompts:
 
-- `translations/...` — Chinese translations of English rule documents
 - `README.md` showcase — What it does, Why it works, Preview, Read links
-- `README.zh-CN.md` corresponding sections
 
-When a canonical prompt changes, check whether the derived content needs synchronization. README and translations are never the source of truth.
+When a canonical prompt changes, check whether its README showcase needs updating. The README is never the source of truth.
 
 ## 1b. Prompt Independence
 
@@ -78,7 +76,7 @@ Every new prompt has at least:
 
 followed by the complete, ready-to-use prompt.
 
-After adding, check: README showcase, README.zh-CN, Repository Structure, AGENTS.md Layout (if it maintains a concrete list), and translation needs.
+After adding, check: README showcase, Repository Structure, and AGENTS.md Layout (if it maintains a concrete list). Preserve the prompt’s original language.
 
 ## 4. Modifying a Prompt
 
@@ -106,7 +104,6 @@ After a behavioral change, explicitly check:
 
 - README "Why it works" is still correct
 - Preview still represents the current version
-- Chinese translation is not outdated
 
 The commit message must reflect that this is a substantive change, not formatting.
 
@@ -129,23 +126,19 @@ Only a deprecated prompt with independent public value gets a formal Deprecated 
 For renames or moves, use a Git-aware rename (`git mv`), then search the whole repository for the old path and update:
 
 - README.md
-- README.zh-CN.md
-- translations
+- existing translations, if they reference the moved prompt
 - AGENTS.md
 - cross-references in other prompts
 
 Never leave broken links.
 
-## 8. Translation Synchronization
+## 8. Language Policy
 
-Canonical source wins. Every translation must link back to the canonical source.
+Use English for README, navigation, showcase descriptions, and repository maintenance documentation. Maintain a single `README.md`; bilingual mirrors are not required.
 
-After a canonical change, decide whether the semantics changed:
+Preserve each prompt in its original language. A Chinese prompt stays Chinese; an English prompt stays English. Link directly to the original and identify its language where useful. Do not translate or rewrite prompt content unless explicitly requested.
 
-- Markdown cleanup, typos, or non-semantic metadata: no mechanical full re-translation needed.
-- Semantic rule changes: sync the corresponding translation.
-
-Do not rewrite translation paragraphs that did not change. Translations must preserve the original strength of `must` / `never` / `should` / `do not`, conditions, exceptions, and risk levels. A translation is not a "softer explanation".
+Existing prompt translations may remain unchanged. They are not a requirement for new prompts or an automatic synchronization obligation when a canonical prompt changes. The linked canonical original remains authoritative. Create or update translations only when explicitly requested; preserve the original meaning, constraint strength, conditions, and exceptions.
 
 ## 9. Deprecating a Prompt
 
@@ -171,17 +164,17 @@ When deleting a canonical prompt, also remove translations and showcase content 
 
 README is the presentation layer, not the prompt source of truth.
 
-After every substantive prompt change, check: name, What it does, Why it works, Best for, Works with, Preview, full-prompt link, and the Chinese entry. Update only the affected parts.
+After every substantive prompt change, check: name, What it does, Why it works, Best for, Works with, Preview, full-prompt link, and language label where applicable. Update only the affected parts.
 
 The README Preview must come from the current prompt — never reference rules that were deleted or changed.
 
-README.md and README.zh-CN.md keep the same information architecture and factual content. Not a word-for-word translation, but no factual divergence.
+Maintain the English README only. Its explanations must accurately describe the linked prompt without requiring a translated copy.
 
 ## 12. AGENTS.md Responsibility
 
 AGENTS.md stays concise: key principles only, linking to this file:
 
-> See MAINTENANCE.md for prompt lifecycle, replacement, translation, and synchronization rules.
+> See MAINTENANCE.md for prompt lifecycle, language policy, replacement, and showcase maintenance rules.
 
 ## 13. No Version System (for now)
 
@@ -200,7 +193,6 @@ docs: refine <name> protocol
 docs: add prompt maintenance workflow
 docs: update <name> protocol
 docs: replace outdated <name> rules
-docs: sync Chinese translation
 ```
 
 Do not bundle unrelated prompt changes into one commit. Never force push.
@@ -216,10 +208,9 @@ After any add / modify / replace / delete, check at least:
 
 ### Derived
 
-- translation needs synchronization
 - README showcase is accurate
 - Preview is still valid
-- README Chinese version is in sync
+- README explanations are English; prompts retain their original language
 
 ### Repository
 
