@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <sub>GLOBAL RULES &nbsp;·&nbsp; UI FIDELITY &nbsp;·&nbsp; CODE REVIEW &nbsp;·&nbsp; REPOSITORY SETUP &nbsp;·&nbsp; PROJECT CLOSEOUT</sub>
+  <sub>GLOBAL RULES &nbsp;·&nbsp; UI FIDELITY &nbsp;·&nbsp; CODE REVIEW &amp; AUDIT &nbsp;·&nbsp; REPOSITORY SETUP &nbsp;·&nbsp; CLOSEOUT &amp; CLEANUP</sub>
 </p>
 
 ---
@@ -50,13 +50,13 @@ Every document has a job. **Persistent rules establish how an agent works; task 
     <td width="50%" valign="top">
       <h3>03 / Establish Confidence</h3>
       <p><sub>REAL REPOSITORY · ACTIONABLE FINDINGS</sub></p>
-      <p>Build project-specific instructions from verified facts; review code without inventing defects.</p>
+      <p>Build project-specific instructions from verified facts; review changes or audit a whole repository without inventing defects.</p>
       <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/expert-code-review.md">Expert Code Review →</a><br><a href="review-workflows/repository-audit.md">Repository Audit →</a></p>
     </td>
     <td width="50%" valign="top">
       <h3>04 / Finish Without Losing Work</h3>
       <p><sub>VALIDATION · DIFF · AUTHORIZATION</sub></p>
-      <p>Inspect the real working tree, complete proportionate verification, and perform only permitted integration actions.</p>
+      <p>Finish verified work, deliver confirmed repairs, or audit local cleanup candidates before recycling only user-selected items.</p>
       <p><a href="project-workflows/project-closeout.md"><strong>Project Closeout →</strong></a><br><a href="project-workflows/repository-audit-repair-closeout.md">Audit, Repair &amp; Closeout →</a><br><a href="project-workflows/local-recycle-bin-cleanup.md">Local Recycle Bin Cleanup →</a></p>
     </td>
   </tr>

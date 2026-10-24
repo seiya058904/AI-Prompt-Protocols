@@ -2,7 +2,7 @@
 
 ## Repository purpose
 
-AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, coding-agent rules, and workflow protocols for AI-assisted development. Every document is a complete, self-contained prompt — copy it into an agent's context and use it. The repository is intentionally Markdown-only: no build system, no dependencies, no website.
+AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, coding-agent rules, and workflow protocols for AI-assisted development. Each canonical protocol is a complete, self-contained prompt — copy it into an agent's context and use it. The repository is intentionally Markdown-only: no build system, no dependencies, no website.
 
 ## Layout
 
@@ -27,4 +27,4 @@ AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, codi
 
 ## Commands
 
-No build, test, or lint tooling exists. Usual workflow: edit Markdown, verify links and privacy, `git add` the intended files, commit with a concise conventional message (`feat:` / `docs:`), and push to `origin/main`.
+No build, test, or lint tooling exists. Usual workflow: edit Markdown, verify links and privacy, review the diff, `git add` the intended files, and commit with a concise conventional message (`feat:` / `docs:`). Push to `origin/main` only when explicitly authorized by the user; this workflow alone does not authorize remote mutations.
