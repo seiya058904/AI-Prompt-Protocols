@@ -1,6 +1,12 @@
 <h1 align="center">🧭 AI Prompt Protocols</h1>
 
 <p align="center">
+  <img src="assets/readme-cover.svg" width="100%" alt="AI Prompt Protocols illustrated workflow: establish rules, implement a focused task, verify evidence, close out responsibly" />
+  <br>
+  <sub>ORIGINAL VECTOR WORKFLOW ILLUSTRATION · SELECT THE PROTOCOL THAT FITS THE TASK</sub>
+</p>
+
+<p align="center">
   <strong>Less improvisation. More reproducible agent work.</strong>
 </p>
 
