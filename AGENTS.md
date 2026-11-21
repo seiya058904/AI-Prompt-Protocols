@@ -7,7 +7,7 @@ AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, codi
 ## Layout
 
 - `MAINTENANCE.md` — prompt lifecycle and maintenance rules.
-- `agent-rules/` — global behavioral rule sets (English): `codex-global-rules.md` and the tool-agnostic `universal-coding-agent-global-rules.md`.
+- `agent-rules/` — global behavioral rule sets (English): `codex-global-rules.md`, `claude-code-global-rules.md`, and the tool-agnostic `universal-coding-agent-global-rules.md`; all three share identical content apart from the title.
 - `ui-workflows/` — UI screenshot → implementation spec, and UI visual fidelity refinement (English).
 - `project-workflows/` — Git closeout / handoff, repository audit–repair–delivery, and user-selected local recycle-bin cleanup (Chinese).
 - `review-workflows/` — high-signal code review (English) and independent whole-repository audit (Chinese).
@@ -21,6 +21,7 @@ AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, codi
 - Use English for README, navigation, showcase descriptions, and repository maintenance documentation. Do not create or maintain bilingual mirrors by default.
 - Preserve each prompt in its original language; do not translate or rewrite prompts unless explicitly requested. Existing prompt translations are preserved, but automatic translation synchronization is not required.
 - Link directly to the original prompt and verify relative links before committing.
+- Several prompts are sanitized mirrors of the maintainer's private collection, which is their upstream source. Keep a mirrored prompt's content identical to the upstream apart from removed private details; apply substantive changes upstream first, then mirror them here.
 - Never commit local machine paths (for example absolute Windows paths), personal knowledge-vault paths, or credentials.
 - Do not add websites, frameworks, logos, or badge walls; keep the repository plain Markdown.
 - Review the final diff before committing; commit only task-owned changes.

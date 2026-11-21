@@ -43,7 +43,7 @@ Every document has a job. **Persistent rules establish how an agent works; task 
       <h3>01 / Establish the Rules</h3>
       <p><sub>PERSISTENT AGENT BEHAVIOR</sub></p>
       <p>Keep changes narrow, preserve existing work, and require evidence for claims.</p>
-      <p><a href="agent-rules/codex-global-rules.md"><strong>Codex Global Rules →</strong></a><br><a href="agent-rules/universal-coding-agent-global-rules.md">Universal Coding Agent Rules →</a></p>
+      <p><a href="agent-rules/codex-global-rules.md"><strong>Codex Global Rules →</strong></a><br><a href="agent-rules/claude-code-global-rules.md">Claude Code Global Rules →</a><br><a href="agent-rules/universal-coding-agent-global-rules.md">Universal Coding Agent Rules →</a></p>
     </td>
     <td width="50%" valign="top">
       <h3>02 / Make the Interface Match</h3>
@@ -71,6 +71,7 @@ Every document has a job. **Persistent rules establish how an agent works; task 
 | Task | Recommended starting point | When |
 | --- | --- | --- |
 | Predictable Codex sessions | [Codex Global Rules](agent-rules/codex-global-rules.md) | Persistent Codex instructions |
+| Predictable Claude Code sessions | [Claude Code Global Rules](agent-rules/claude-code-global-rules.md) | Persistent Claude Code instructions (`~/.claude/CLAUDE.md`) |
 | Consistent cross-agent behavior | [Universal Coding Agent Global Rules](agent-rules/universal-coding-agent-global-rules.md) | Persistent, tool-independent instructions |
 | Interpret a screenshot | [UI Screenshot → Implementation Spec](ui-workflows/ui-screenshot-to-implementation-spec.md) | Before implementation |
 | Match a reference image | [UI Visual Fidelity Refinement](ui-workflows/ui-visual-fidelity-refinement.md) | After a working first render |
@@ -92,6 +93,12 @@ Navigation and explanations are in English. Prompts are presented in their origi
 **Use when:** a Codex session needs stable expectations around scope, edits, testing, and external actions. It emphasizes the smallest safe change, preservation of existing work, proportionate checks, and accurate completion reports.
 
 **Read:** [English source](agent-rules/codex-global-rules.md) · [Chinese translation](translations/zh-CN/agent-rules/codex-global-rules.md)
+
+### Claude Code Global Rules
+
+**Use when:** Claude Code needs the same persistent expectations as Codex. The content is identical to the Codex and Universal rules apart from the title, so one rule set can be maintained across agents.
+
+**Read:** [English source](agent-rules/claude-code-global-rules.md)
 
 ### Universal Coding Agent Global Rules
 
@@ -195,7 +202,7 @@ Authorized closeout
 ## File map
 
 ```text
-agent-rules/          Codex-specific and universal persistent rules
+agent-rules/          Codex, Claude Code, and universal persistent rules
 ui-workflows/         Screenshot specification and visual refinement
 project-workflows/    Task closeout, audit-to-repair delivery, and local cleanup
 review-workflows/     Evidence-led code review and independent repository audit
