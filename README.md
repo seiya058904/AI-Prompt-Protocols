@@ -57,7 +57,7 @@ Every document has a job. **Persistent rules establish how an agent works; task 
       <h3>03 / Establish Confidence</h3>
       <p><sub>REAL REPOSITORY · ACTIONABLE FINDINGS</sub></p>
       <p>Build project-specific instructions from verified facts; review changes or audit a whole repository without inventing defects.</p>
-      <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/expert-code-review.md">Expert Code Review →</a><br><a href="review-workflows/repository-audit.md">Repository Audit →</a></p>
+      <p><a href="init-workflows/universal-agent-init.md"><strong>Universal Agent Init →</strong></a><br><a href="review-workflows/unified-code-review-and-repository-audit.md">Unified Code Review &amp; Repository Audit →</a></p>
     </td>
     <td width="50%" valign="top">
       <h3>04 / Finish Without Losing Work</h3>
@@ -76,9 +76,8 @@ Every document has a job. **Persistent rules establish how an agent works; task 
 | Interpret a screenshot | [UI Screenshot → Implementation Spec](ui-workflows/ui-screenshot-to-implementation-spec.md) | Before implementation |
 | Match a reference image | [UI Visual Fidelity Refinement](ui-workflows/ui-visual-fidelity-refinement.md) | After a working first render |
 | Finish a scoped task | [Project Closeout](project-workflows/project-closeout.md) | After verification and diff review |
-| Review a change | [Expert Code Review](review-workflows/expert-code-review.md) | Before approving or merging |
+| Review a change, a scope, or a whole repository | [Unified Code Review & Repository Audit](review-workflows/unified-code-review-and-repository-audit.md) | Before merging, or as an audit-only health check |
 | Set up repository guidance | [Universal Agent Init](init-workflows/universal-agent-init.md) | On project adoption or instruction audit |
-| Audit an entire repository | [Repository Audit](review-workflows/repository-audit.md) | Independent investigation without repairs |
 | Audit, repair, and deliver a repository | [Repository Audit, Repair & Closeout](project-workflows/repository-audit-repair-closeout.md) | Explicitly authorized execution and Git delivery |
 | Review local cleanup candidates | [Local Recycle Bin Cleanup](project-workflows/local-recycle-bin-cleanup.md) | Read-only audit, then user-selected recycling |
 
@@ -86,13 +85,13 @@ Every document has a job. **Persistent rules establish how an agent works; task 
 
 The files linked below are the **authoritative prompts**. This README is the map—not a second, abbreviated copy to give an agent instead of the real document.
 
-Navigation and explanations are in English. Prompts are presented in their original language; no translated copy is required. Existing optional translations remain available where linked.
+Navigation and explanations are in English. Prompts are presented in their original language; no translated copy is required.
 
 ### Codex Global Rules
 
 **Use when:** a Codex session needs stable expectations around scope, edits, testing, and external actions. It emphasizes the smallest safe change, preservation of existing work, proportionate checks, and accurate completion reports.
 
-**Read:** [English source](agent-rules/codex-global-rules.md) · [Chinese translation](translations/zh-CN/agent-rules/codex-global-rules.md)
+**Read:** [English source](agent-rules/codex-global-rules.md)
 
 ### Claude Code Global Rules
 
@@ -104,7 +103,7 @@ Navigation and explanations are in English. Prompts are presented in their origi
 
 **Use when:** the same working principles must survive a change of coding assistant. The rules avoid assuming one tool interface, while retaining explicit boundaries for destructive operations, repository state, and permission to act.
 
-**Read:** [English source](agent-rules/universal-coding-agent-global-rules.md) · [Chinese translation](translations/zh-CN/agent-rules/universal-coding-agent-global-rules.md)
+**Read:** [English source](agent-rules/universal-coding-agent-global-rules.md)
 
 ### UI Screenshot → Implementation Spec Protocol
 
@@ -138,25 +137,19 @@ If a browser or screenshot comparison is unavailable, the protocol requires **an
 
 **Read:** [Chinese canonical source](project-workflows/project-closeout.md)
 
-### Expert Code Review Protocol
+### Unified Code Review & Repository Audit
 
-**Use before accepting a change.** Report issues that are supported by evidence, specific enough to fix, materially relevant, and not duplicates. Separate a confirmed finding from a question that **needs verification**; zero invented findings is better than a long speculative report.
+**Use before accepting a change, or for an audit-only health check.** This Chinese-language protocol selects CHANGE (a PR, diff, or commit range), REPOSITORY (a whole-repository audit), or FOCUSED (specified files or modules) mode automatically. It pins a baseline, separates confirmed findings from those that still need verification, and hands off repair guidance; zero invented findings is better than a long speculative report.
 
-**Read:** [Source protocol](review-workflows/expert-code-review.md)
+**Boundary:** audit only by default. It does not repair code, create commits or PRs, push, or deploy.
+
+**Read:** [Chinese canonical source](review-workflows/unified-code-review-and-repository-audit.md)
 
 ### Universal Agent Init
 
 **Use when adopting or auditing a repository.** Inspect the actual source, commands, tests, and existing instructions before updating `AGENTS.md` or `CLAUDE.md`. Preserve valuable guidance and user changes instead of pasting a generic template.
 
 **Read:** [Source protocol](init-workflows/universal-agent-init.md)
-
-### Repository Audit Protocol
-
-**Use for a whole-repository health check, rather than a review of one diff.** Pin the audit to a commit SHA, map applicable areas, reproduce candidate defects, and separate runtime confirmation, static proof, and findings that still need verification. The audit does not authorize repairs or remote mutations.
-
-**Output:** prioritized findings, reproduction evidence, coverage, and verification limits. Fill in the target repository before use.
-
-**Read:** [Chinese canonical source](review-workflows/repository-audit.md)
 
 ### Repository Audit, Repair & Closeout
 
@@ -190,7 +183,7 @@ Verify evidence and review the diff
 Authorized closeout
 ```
 
-**Example paths:** *Screenshot → Spec → Implementation → Fidelity Refinement.* Or *Change → Expert Review → Verified Closeout.* The protocols complement real project instructions; they never override explicit permissions or facts on disk.
+**Example paths:** *Screenshot → Spec → Implementation → Fidelity Refinement.* Or *Change → Unified Review (CHANGE mode) → Verified Closeout.* The protocols complement real project instructions; they never override explicit permissions or facts on disk.
 
 ## How to use a protocol
 
@@ -205,9 +198,8 @@ Authorized closeout
 agent-rules/          Codex, Claude Code, and universal persistent rules
 ui-workflows/         Screenshot specification and visual refinement
 project-workflows/    Task closeout, audit-to-repair delivery, and local cleanup
-review-workflows/     Evidence-led code review and independent repository audit
+review-workflows/     Unified code review and repository audit
 init-workflows/       AGENTS.md / CLAUDE.md initialization
-translations/zh-CN/   Chinese translations of canonical English rules
 README.md            English navigation and protocol showcase
 MAINTENANCE.md       Prompt lifecycle and language policy
 ```
