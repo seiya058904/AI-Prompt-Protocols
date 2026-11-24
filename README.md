@@ -90,7 +90,7 @@ Every document has a job. **Persistent rules establish how an agent works; task 
 
 If you adopt only one document from this repository, start with the **Global Agent Rules**—using **[Universal Coding Agent Global Rules](agent-rules/universal-coding-agent-global-rules.md)** as the core blueprint.
 
-Unlike task-specific protocols that you invoke occasionally, global rules sit in your agent's persistent configuration and govern **every single turn across every repository**. The universal core is deliberately compact—**49 lines (~870 words)** organized into six interlocking sections (`Working Style`, `Repository Work`, `Project Closeout`, `Boundaries`, `Tool Efficiency`, and `Optional Personal Collection`)—so every line carries real operational weight without bloating your context window.
+Unlike task-specific protocols that you invoke occasionally, global rules sit in your agent's persistent configuration and govern **every single turn across every repository**. The universal core is deliberately compact—**52 lines (~1,040 words)** organized into six interlocking sections (`Working Style`, `Repository Work`, `Project Closeout`, `Boundaries`, `Tool Efficiency`, and `Optional Personal Collection`)—so every line carries real operational weight without bloating your context window.
 
 ### 1. Safety & Guardrails Against Dangerous Operations
 
@@ -107,7 +107,7 @@ Most coding-agent disasters happen when an agent tries to be "helpful" beyond it
 
 Every extra turn in a coding agent replays conversation history, burns tokens, and adds latency. These rules cut wasted rounds, bloated context, and runaway execution without sacrificing engineering rigor:
 
-- **Minimal persistent prompt footprint:** At **49 lines** (and **30 lines** in the Gemini-oriented Antigravity variant), the rules impose a very small fixed token cost per turn compared to sprawling multi-page system prompts.
+- **Minimal persistent prompt footprint:** At **52 lines** (and **34 lines** in the Gemini-oriented Antigravity variant), the rules impose a very small fixed token cost per turn compared to sprawling multi-page system prompts.
 - **Context discipline (`Inspect only what the task needs`):** Stops agents from dumping entire repositories into context or scanning unrelated directories. Even the optional personal collection footer is strictly on-demand (`Never scan it routinely`).
 - **Smart batching that cuts turn overhead:** Independent reads, searches, and checks are batched instead of split across unnecessary back-and-forth turns—reducing repeated input-context replay—while dependent investigations, conflicting edits, approvals, waits, and destructive actions stay strictly sequential so batching never causes race conditions or wasted work.
 - **No silent multi-agent token explosions:** `Do not spawn subagents or agent teams unless explicitly requested` prevents an agent from spinning up parallel sub-conversations that multiply token spend behind your back.
@@ -167,10 +167,10 @@ All four files under `agent-rules/` enforce the same core engineering principles
 
 | Variant | File | Typical Location | Footprint & Adaptation |
 | --- | --- | --- | --- |
-| **Universal** *(Reference Blueprint)* | [universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md) | Any coding agent's global prompt | 49 lines · Tool-agnostic core; omits specific browser-automation tools |
+| **Universal** *(Reference Blueprint)* | [universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md) | Any coding agent's global prompt | 52 lines · Tool-agnostic core with completeness sweep, mechanical-check ratchet, and 2-round review cap; omits specific browser-automation tools |
 | **Codex** | [codex-global-rules.md](agent-rules/codex-global-rules.md) | `~/.codex/AGENTS.md` | 50 lines · Core rules + `ego-browser` vs. `playwright` browser-automation routing |
-| **Claude Code** | [claude-code-global-rules.md](agent-rules/claude-code-global-rules.md) | `~/.claude/CLAUDE.md` | 50 lines · Identical body to Codex rules apart from the title for unified maintenance |
-| **Antigravity (Gemini)** | [antigravity-global-rules.md](agent-rules/antigravity-global-rules.md) | `~/.gemini/config/GEMINI.md` | 30 lines · Compact Gemini-oriented wording; maps `GEMINI.md` / `.agents/`, guards workflows & swarms, includes browser routing |
+| **Claude Code** | [claude-code-global-rules.md](agent-rules/claude-code-global-rules.md) | `~/.claude/CLAUDE.md` | 54 lines · Core + browser routing + Claude-specific anti-pause execution, plain-language UI copy, completeness sweep, mechanical checks, and 2-round review cap |
+| **Antigravity (Gemini)** | [antigravity-global-rules.md](agent-rules/antigravity-global-rules.md) | `~/.gemini/config/GEMINI.md` | 34 lines · Compact Gemini-oriented wording with anti-hallucination (`[推测]`) and anti-sycophancy guardrails, completeness sweep, mechanical checks, and browser routing |
 
 > **Honest boundary:** Well-crafted global rules substantially reduce avoidable mistakes, instruction drift, and wasted turns, but prompts are a **behavioral layer—not a security sandbox**. Keep them paired with your tool's real permission prompts, version control, and human review for irreversible actions.
 
@@ -190,13 +190,13 @@ Navigation and explanations are in English. Prompts are presented in their origi
 
 ### Claude Code Global Rules
 
-**Use when:** Claude Code needs the same persistent expectations as Codex. The content is identical to the Codex rules apart from the title (including browser-automation routing), so one rule set can be maintained across both agents.
+**Use when:** Claude Code needs persistent engineering discipline plus Claude-specific guardrails—executing authorized milestones without premature pauses, keeping user-facing UI copy concise and plain-language, sweeping coupled siblings, turning repeatable defects into mechanical checks, capping reviews at 2 rounds, and routing `ego-browser` vs. `playwright`.
 
 **Read:** [English source](agent-rules/claude-code-global-rules.md)
 
 ### Antigravity Global Rules
 
-**Use when:** an Antigravity (Gemini) session needs the same engineering discipline in a more compact, Gemini-oriented form. It maps repository instructions to `GEMINI.md`, `AGENTS.md`, and `.agents/`, guards subagent/workflow/swarm invocation and Antigravity permission settings, and includes browser-automation routing.
+**Use when:** an Antigravity (Gemini) session needs compact, high-signal engineering discipline tailored to Gemini's strengths and failure modes—explicitly separating verified repo facts from `[推测]` inferences, pushing back on flawed plans, sweeping coupled edits, adding mechanical checks, guarding workflows/swarms and Antigravity settings, and routing `ego-browser` vs. `playwright`.
 
 **Read:** [English source](agent-rules/antigravity-global-rules.md)
 

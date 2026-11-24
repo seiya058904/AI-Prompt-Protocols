@@ -7,7 +7,7 @@ AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, codi
 ## Layout
 
 - `MAINTENANCE.md` — prompt lifecycle and maintenance rules.
-- `agent-rules/` — global behavioral rule sets (English): `codex-global-rules.md`, `claude-code-global-rules.md`, `antigravity-global-rules.md`, and the tool-agnostic `universal-coding-agent-global-rules.md`. Codex and Claude Code share identical content apart from the title (including browser-automation routing); Antigravity is a concise Gemini-adapted variant; Universal omits specific browser tools.
+- `agent-rules/` — global behavioral rule sets (English): `codex-global-rules.md`, `claude-code-global-rules.md`, `antigravity-global-rules.md`, and the tool-agnostic `universal-coding-agent-global-rules.md`. Codex and Claude Code both include browser-automation routing, with Claude Code adding Claude-specific execution and UI-copy guardrails plus completeness, mechanical-check, and bounded-review rules; Antigravity is a concise Gemini-adapted variant with anti-hallucination and anti-sycophancy guardrails; Universal is the tool-agnostic core without specific browser tools.
 - `ui-workflows/` — UI screenshot → implementation spec, and UI visual fidelity refinement (English).
 - `project-workflows/` — Git closeout / handoff, repository audit–repair–delivery, and user-selected local recycle-bin cleanup (Chinese).
 - `review-workflows/` — unified code review and repository audit with CHANGE / REPOSITORY / FOCUSED modes (Chinese).
