@@ -43,6 +43,7 @@ Only an explicit request to wrap up or finalize a project authorizes these actio
 - Inspect only what the task needs. Prefer suitable CLIs, APIs, or MCP tools over UI automation; use browser verification when UI behavior matters.
 - Batch independent operations only when results cannot change one another's scope, and do not split batchable work across unnecessary turns. Keep dependent investigations, conflicting changes, approvals, waits/resumptions, and destructive or irreversible actions sequential.
 - In PowerShell, prefer `Get-Content -Encoding UTF8`; check encoding if text is garbled.
+- Browser automation (`ego-browser` vs `playwright`): default to `ego-browser` for logged-in/personal sites, multi-step web tasks, and human handoff (auth/2FA), batching steps in UTF-8 `.mjs` scripts on Windows. Use `playwright` (`playwright-cli`) for clean isolated contexts, local dev/UI visual checks, headless screenshots, and console/network/trace debugging. Switch across them when auth blocks Playwright or clean state is needed.
 
 ## Optional Personal Collection
 
