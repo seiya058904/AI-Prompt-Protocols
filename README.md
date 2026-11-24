@@ -16,6 +16,8 @@
 </p>
 
 <p align="center">
+  <a href="#featured-global-agent-rules">🛡️ Global Rules Deep Dive</a>
+  &nbsp;·&nbsp;
   <a href="#start-with-the-task">🗂️ Find a Protocol</a>
   &nbsp;·&nbsp;
   <a href="#putting-them-together">🔁 Workflow</a>
@@ -81,6 +83,98 @@ Every document has a job. **Persistent rules establish how an agent works; task 
 | Set up repository guidance | [Universal Agent Init](init-workflows/universal-agent-init.md) | On project adoption or instruction audit |
 | Audit, repair, and deliver a repository | [Repository Audit, Repair & Closeout](project-workflows/repository-audit-repair-closeout.md) | Explicitly authorized execution and Git delivery |
 | Review local cleanup candidates | [Local Recycle Bin Cleanup](project-workflows/local-recycle-bin-cleanup.md) | Read-only audit, then user-selected recycling |
+
+---
+
+## Featured: Global Agent Rules
+
+If you adopt only one document from this repository, start with the **Global Agent Rules**—using **[Universal Coding Agent Global Rules](agent-rules/universal-coding-agent-global-rules.md)** as the core blueprint.
+
+Unlike task-specific protocols that you invoke occasionally, global rules sit in your agent's persistent configuration and govern **every single turn across every repository**. The universal core is deliberately compact—**49 lines (~870 words)** organized into six interlocking sections (`Working Style`, `Repository Work`, `Project Closeout`, `Boundaries`, `Tool Efficiency`, and `Optional Personal Collection`)—so every line carries real operational weight without bloating your context window.
+
+### 1. Safety & Guardrails Against Dangerous Operations
+
+Most coding-agent disasters happen when an agent tries to be "helpful" beyond its authorization: wiping untracked files, pushing unreviewed commits, rewriting Git history, upgrading packages mid-fix, or quietly bypassing friction. `Universal Coding Agent Global Rules` addresses these failure modes with explicit, unambiguous hard stops:
+
+- **No blanket destructive deletion:** Commands such as `rm -rf`, `Remove-Item -Recurse`, `git clean -fd/-fdx`, `del /s`, `rd /s`, and `rmdir /s` are explicitly prohibited. Deletion is restricted to individually identified, explicitly approved, safety-verified paths. Even during an authorized project closeout, approved cleanup items go to the **Recycle Bin** first; permanent deletion requires separate approval, and if safe recycling is unavailable, the agent must report that instead of deleting.
+- **Hard wall on external mutations and dependency drift:** Outside an explicitly scoped closeout, pushes, merges, deployments, releases, publishing, remote configuration changes, and adding or upgrading dependencies all require explicit authorization or a user-invoked workflow—**repository conventions alone grant none**. Installing already-declared dependencies from trusted project sources remains allowed without mutating version declarations or lockfiles.
+- **No history destruction or secret exposure:** Force-pushing and history rewrites require separate explicit authorization and may never be used merely to synchronize a branch. Secrets may never be exposed or committed.
+- **No permission-system circumvention:** The agent is explicitly barred from modifying permission/approval settings, bypassing approval prompts, or working around a user denial (`never bypass a denial`).
+- **Protection of unrelated user work and branches:** Unrelated local modifications must be preserved and excluded from edits and commits—never discarded, stashed, or bundled just to make `git status` look clean. Default, protected, long-lived, shared, and uncertain branches are protected; remote branch deletion requires separate explicit authorization.
+- **Explicit opt-in for project closeout:** Routine task completion never silently triggers workspace cleanup, branch deletion, merges, or pushes. Closeout rules activate **only** on an explicit request to wrap up or finalize a project, strictly within the agreed scope.
+
+### 2. Execution Efficiency, Tool Discipline & Token Savings
+
+Every extra turn in a coding agent replays conversation history, burns tokens, and adds latency. These rules cut wasted rounds, bloated context, and runaway execution without sacrificing engineering rigor:
+
+- **Minimal persistent prompt footprint:** At **49 lines** (and **30 lines** in the Gemini-oriented Antigravity variant), the rules impose a very small fixed token cost per turn compared to sprawling multi-page system prompts.
+- **Context discipline (`Inspect only what the task needs`):** Stops agents from dumping entire repositories into context or scanning unrelated directories. Even the optional personal collection footer is strictly on-demand (`Never scan it routinely`).
+- **Smart batching that cuts turn overhead:** Independent reads, searches, and checks are batched instead of split across unnecessary back-and-forth turns—reducing repeated input-context replay—while dependent investigations, conflicting edits, approvals, waits, and destructive actions stay strictly sequential so batching never causes race conditions or wasted work.
+- **No silent multi-agent token explosions:** `Do not spawn subagents or agent teams unless explicitly requested` prevents an agent from spinning up parallel sub-conversations that multiply token spend behind your back.
+- **Lean verification and anti-retry discipline:** Checks stay proportionate to scope and risk, targeting under five minutes for local tests and GitHub Actions CI through targeted tests, path filters, caching, and skipping nonessential builds/tests on docs-only changes. The agent must diagnose failures before rerunning, avoid blind retry loops or "validation for appearance," and stop optional testing once criteria and relevant risks are covered.
+- **Prefer the right tool over brittle automation:** Favors CLIs, APIs, and MCP tools over slow UI automation, reserves browser verification for when UI behavior genuinely matters, and prevents common Windows encoding bugs (`Get-Content -Encoding UTF8`). The tool-specific variants (`Codex`, `Claude Code`, `Antigravity`) also encode clean browser-automation routing (`ego-browser` for logged-in/personal workflows vs. `playwright` for isolated visual/trace checks).
+- **Concise, result-first communication:** Leads with the outcome or required action, skips formal plans when complexity doesn't warrant one, and offers 1–3 prioritized, non-repetitive next steps instead of filler summaries.
+
+### 3. Instruction Following, Precedence & Anti-Hallucination Discipline
+
+A common complaint with coding agents is that they either ignore project conventions, ask too many trivial questions, over-engineer simple fixes, or claim success without verifying. The rules establish a clear operating contract:
+
+- **Clear instruction hierarchy:** Explicit user instructions and the `Boundaries` section always hold. Applicable repository instructions (`AGENTS.md`, `CLAUDE.md`, `.claude/rules/`, nested instruction files) override global defaults, and the agent must proactively read applicable non-autoloaded or nested files *before* modifying files.
+- **Decisive execution without reckless guessing:** Completes authorized work directly using available tools. Asks only when ambiguity materially affects correctness, safety, scope, or a genuine user choice; otherwise states a safe assumption when relevant and proceeds. Authorization stays valid within its original scope and only reconfirms when scope or risk materially changes.
+- **Constructive handling of blockers:** When blocked by a missing permission or external failure, the agent finishes independent safe work first, identifies the exact blocker, and asks only for the minimum approval needed.
+- **Smallest safe change + durable project memory:** Grounds every edit in current repository evidence, reuses existing code, and forbids unsolicited features, abstractions, dependencies, configuration, or refactors. Durable project preferences go into versioned repository files (`AGENTS.md`, `CLAUDE.md`, skills, `docs/`) rather than private agent memory that breaks across machines or directory moves.
+- **Evidence-before-confidence completion gate:** Before reporting done, the agent must inspect the final diff and repository state, then report actual changes, checks actually run, failures or skipped checks, and remaining uncertainty—explicitly forbidding claims of unperformed verification.
+
+### Failure Mode → Rule Mapping
+
+| Common Agent Failure Mode | Rule in `Universal Coding Agent Global Rules` | Practical Effect |
+| --- | --- | --- |
+| Wiping untracked files with `git clean -fdx` or `rm -rf` | Explicit ban on blanket recursive deletes; path-by-path approval + Recycle Bin default on closeout | Eliminates catastrophic one-command data loss |
+| Pushing, merging, or upgrading packages unasked | Hard authorization wall on external mutations and dependency changes | Keeps Git history, remotes, and lockfiles under human control |
+| Silently multiplying token spend via subagents | `Do not spawn subagents or agent teams unless explicitly requested` | Predictable token usage and single-thread clarity |
+| Burning context & turns on one-by-one file reads | `Inspect only what the task needs` + batch independent operations | Fewer round-trips, smaller context replay, faster execution |
+| Endless blind test reruns or slow full-suite CI on doc edits | Diagnose before rerunning; proportionate checks; lean <5-min CI; skip nonessential builds for docs-only changes | Faster feedback loops without theatrical validation |
+| Overwriting or stashing the user's uncommitted work | Preserve unrelated user changes; never discard, stash, or commit them for cleanliness | Safe coexistence with in-progress local edits |
+| Claiming "verified" without running checks or reading diff | Inspect final diff & repo state; report actual checks run/skipped; never claim unperformed verification | High-trust completion reports with honest caveats |
+| Endless clarifying questions—or silently guessing on risky changes | Act directly; ask only on material correctness/safety/scope/choice ambiguity | Smooth autonomy on routine work, hard stops on real decisions |
+
+### Verbatim Excerpt (`Universal Coding Agent Global Rules`)
+
+From [agent-rules/universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md):
+
+```markdown
+## Boundaries
+
+- Do not spawn subagents or agent teams unless explicitly requested.
+- Outside scoped closeout, external mutations (including pushes, merges, deployments, releases, publishing, and remote configuration changes) and dependency updates require explicit authorization or a user-invoked workflow covering them. Repository conventions alone grant none.
+- Installing existing dependencies from trusted project sources is allowed when needed, without changing declared versions or lockfiles. Adding or upgrading dependencies requires authorization.
+- Force-pushing and history rewrites require separate explicit authorization; never use them just to synchronize. Never expose or commit secrets.
+- Delete only individually identified, explicitly approved, and safety-verified paths. Never perform broad or uncertain deletion or use blanket cleanup commands such as `rm -rf`, `Remove-Item -Recurse`, `git clean -fd/-fdx`, `del /s`, `rd /s`, or `rmdir /s`.
+- Respect the agent's permission and approval system; never change settings or bypass approval prompts to evade these boundaries.
+
+## Tool Efficiency
+
+- Inspect only what the task needs. Prefer suitable CLIs, APIs, or MCP tools over UI automation; use browser verification when UI behavior matters.
+- Batch independent operations only when results cannot change one another's scope, and do not split batchable work across unnecessary turns. Keep dependent investigations, conflicting changes, approvals, waits/resumptions, and destructive or irreversible actions sequential.
+- In PowerShell, prefer `Get-Content -Encoding UTF8`; check encoding if text is garbled.
+```
+
+> **Quick adaptation tip:** The universal prompt defaults to concise Simplified Chinese replies (line 5) and ends with an optional `<your-collection-repository-path>` hook. Change the reply language to your preferred language and replace or remove the optional personal-collection footer before pasting it into your agent's global rules file.
+
+### Choosing Among the Four Global Rule Variants
+
+All four files under `agent-rules/` enforce the same core engineering principles, adapted to each agent ecosystem:
+
+| Variant | File | Typical Location | Footprint & Adaptation |
+| --- | --- | --- | --- |
+| **Universal** *(Reference Blueprint)* | [universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md) | Any coding agent's global prompt | 49 lines · Tool-agnostic core; omits specific browser-automation tools |
+| **Codex** | [codex-global-rules.md](agent-rules/codex-global-rules.md) | `~/.codex/AGENTS.md` | 50 lines · Core rules + `ego-browser` vs. `playwright` browser-automation routing |
+| **Claude Code** | [claude-code-global-rules.md](agent-rules/claude-code-global-rules.md) | `~/.claude/CLAUDE.md` | 50 lines · Identical body to Codex rules apart from the title for unified maintenance |
+| **Antigravity (Gemini)** | [antigravity-global-rules.md](agent-rules/antigravity-global-rules.md) | `~/.gemini/config/GEMINI.md` | 30 lines · Compact Gemini-oriented wording; maps `GEMINI.md` / `.agents/`, guards workflows & swarms, includes browser routing |
+
+> **Honest boundary:** Well-crafted global rules substantially reduce avoidable mistakes, instruction drift, and wasted turns, but prompts are a **behavioral layer—not a security sandbox**. Keep them paired with your tool's real permission prompts, version control, and human review for irreversible actions.
+
+---
 
 ## Protocols in context
 
