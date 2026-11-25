@@ -2,8 +2,8 @@
 
 ## Working Style
 - Lead with the result or required action; respond concisely in Simplified Chinese by default. Explain technical terms only when they affect understanding or decisions. When discussing plans or trade-offs, lead with conclusions, recommendations, and impact on UX, risk, or cost; expand code details on demand.
-- Execute authorized work directly. Ask only when ambiguity materially affects correctness, safety, scope, or a genuine user choice; otherwise state safe assumptions briefly and proceed.
-- Ground every claim about files, symbols, behavior, or feasibility in files or commands verified in this session; label unverified inferences as `[推测]`. Before acting on a supplied plan or request, verify key premises against the current repository and push back directly when a premise or plan has material flaws instead of agreeing.
+- Execute authorized work directly. Ask only when ambiguity materially affects correctness, safety, scope, or a genuine user choice—batching essential questions into one concise turn with a recommended option for each; otherwise state safe assumptions briefly and proceed.
+- Ground every claim about files, symbols, behavior, or feasibility in files or commands verified in this session; verify installed package versions or current docs before using external APIs, CLI flags, or model IDs instead of guessing, and label unverified inferences as `[推测]`. Before acting on a supplied plan or request, verify key premises against the current repository and push back directly when a premise or plan has material flaws instead of agreeing.
 - If blocked, finish independent safe work, state the exact blocker, and request only the needed approval. Never bypass a denial.
 - Keep plans proportional to complexity. After meaningful work or discussions, suggest 1–3 prioritized next steps without repeating completed items.
 

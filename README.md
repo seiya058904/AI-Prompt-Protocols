@@ -167,10 +167,10 @@ All four files under `agent-rules/` enforce the same core engineering principles
 
 | Variant | File | Typical Location | Footprint & Adaptation |
 | --- | --- | --- | --- |
-| **Universal** *(Reference Blueprint)* | [universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md) | Any coding agent's global prompt | 52 lines · Tool-agnostic core with completeness sweep, mechanical-check ratchet, and 2-round review cap; omits specific browser-automation tools |
-| **Codex** | [codex-global-rules.md](agent-rules/codex-global-rules.md) | `~/.codex/AGENTS.md` | 50 lines · Core rules + `ego-browser` vs. `playwright` browser-automation routing |
-| **Claude Code** | [claude-code-global-rules.md](agent-rules/claude-code-global-rules.md) | `~/.claude/CLAUDE.md` | 54 lines · Core + browser routing + Claude-specific anti-pause execution, plain-language UI copy, completeness sweep, mechanical checks, and 2-round review cap |
-| **Antigravity (Gemini)** | [antigravity-global-rules.md](agent-rules/antigravity-global-rules.md) | `~/.gemini/config/GEMINI.md` | 34 lines · Compact Gemini-oriented wording with anti-hallucination (`[推测]`) and anti-sycophancy guardrails, completeness sweep, mechanical checks, and browser routing |
+| **Universal** *(Reference Blueprint)* | [universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md) | Any coding agent's global prompt | 52 lines · Tool-agnostic core with completeness sweep, mechanical-check ratchet, external API/version verification, and 2-round review cap; omits specific browser-automation tools |
+| **Codex** | [codex-global-rules.md](agent-rules/codex-global-rules.md) | `~/.codex/AGENTS.md` | 53 lines · Universal core + `ego-browser` vs. `playwright` browser-automation routing |
+| **Claude Code** | [claude-code-global-rules.md](agent-rules/claude-code-global-rules.md) | `~/.claude/CLAUDE.md` | 54 lines · Universal core + browser routing + Claude-specific anti-pause execution and plain-language UI copy |
+| **Antigravity (Gemini)** | [antigravity-global-rules.md](agent-rules/antigravity-global-rules.md) | `~/.gemini/config/GEMINI.md` | 34 lines · Compact Gemini-oriented wording with anti-hallucination (`[推测]`), anti-sycophancy, external API/version verification, completeness sweep, mechanical checks, and browser routing |
 
 > **Honest boundary:** Well-crafted global rules substantially reduce avoidable mistakes, instruction drift, and wasted turns, but prompts are a **behavioral layer—not a security sandbox**. Keep them paired with your tool's real permission prompts, version control, and human review for irreversible actions.
 
@@ -184,7 +184,7 @@ Navigation and explanations are in English. Prompts are presented in their origi
 
 ### Codex Global Rules
 
-**Use when:** a Codex session needs stable expectations around scope, edits, testing, browser-automation routing, and external actions. It emphasizes the smallest safe change, preservation of existing work, proportionate checks, and accurate completion reports.
+**Use when:** a Codex session needs stable expectations around scope, edits, testing, browser-automation routing, and external actions. It pairs the universal engineering core (premise checks, coupled-location sweeps, mechanical checks, external API/version verification, and 2-round review caps) with `ego-browser` vs. `playwright` routing.
 
 **Read:** [English source](agent-rules/codex-global-rules.md)
 
