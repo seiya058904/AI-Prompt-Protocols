@@ -1,31 +1,14 @@
 # AGENTS.md
 
-## Repository purpose
+## Repository Purpose
+AI-Prompt-Protocols is a plain-Markdown library of self-contained prompts, coding-agent rules, and workflow protocols. Intentionally Markdown-only: no build system, no dependencies, no website, no badge walls.
 
-AI-Prompt-Protocols is a small, high-signal, plain-text library of prompts, coding-agent rules, and workflow protocols for AI-assisted development. Each canonical protocol is a complete, self-contained prompt — copy it into an agent's context and use it. The repository is intentionally Markdown-only: no build system, no dependencies, no website.
+## Ground Rules
+- Prompts are curated content; do not make unsolicited substantive rewrites. When explicitly updating a prompt, follow [MAINTENANCE.md](MAINTENANCE.md) for lifecycle, language, replacement, and README showcase sync.
+- Keep `README.md`, navigation, showcase descriptions, and maintenance docs in English (no bilingual mirrors by default). Preserve each prompt in its original language unless translation is requested.
+- Several prompts (including `agent-rules/`) are sanitized mirrors of the maintainer's private upstream collection: apply substantive changes upstream first, then mirror verbatim with private details removed.
+- **Privacy hard rule**: never commit local machine paths (e.g. absolute Windows paths), personal knowledge-vault paths, or credentials. Verify all relative links before committing.
 
-## Layout
-
-- `MAINTENANCE.md` — prompt lifecycle and maintenance rules.
-- `agent-rules/` — global behavioral rule sets (English): `codex-global-rules.md`, `claude-code-global-rules.md`, `antigravity-global-rules.md`, and the tool-agnostic `universal-coding-agent-global-rules.md`. Codex and Claude Code both build on the universal core with browser-automation routing, with Claude Code adding Claude-specific anti-pause execution and plain-language UI-copy guardrails; Antigravity is a concise Gemini-adapted variant with anti-hallucination and anti-sycophancy guardrails; Universal is the tool-agnostic core without specific browser tools.
-- `ui-workflows/` — UI screenshot → implementation spec, and UI visual fidelity refinement (English).
-- `project-workflows/` — Git closeout / handoff, repository audit–repair–delivery, and user-selected local recycle-bin cleanup (Chinese).
-- `review-workflows/` — unified code review and repository audit with CHANGE / REPOSITORY / FOCUSED modes (Chinese).
-- `init-workflows/universal-agent-init.md` — AGENTS.md / CLAUDE.md bootstrap protocol (English).
-- `README.md` — English home page and protocol showcase.
-
-## Ground rules
-
-- The prompt documents are curated content. Do not make unsolicited substantive rewrites to curated prompts. When a task explicitly requests a prompt update, modify the canonical prompt deliberately and follow `MAINTENANCE.md` for synchronization and verification.
-- See [MAINTENANCE.md](MAINTENANCE.md) for prompt lifecycle, language policy, replacement, and showcase maintenance rules.
-- Use English for README, navigation, showcase descriptions, and repository maintenance documentation. Do not create or maintain bilingual mirrors by default.
-- Preserve each prompt in its original language; do not translate or rewrite prompts unless explicitly requested.
-- Link directly to the original prompt and verify relative links before committing.
-- Several prompts are sanitized mirrors of the maintainer's private collection, which is their upstream source. Keep a mirrored prompt's content identical to the upstream apart from removed private details; apply substantive changes upstream first, then mirror them here.
-- Never commit local machine paths (for example absolute Windows paths), personal knowledge-vault paths, or credentials.
-- Do not add websites, frameworks, logos, or badge walls; keep the repository plain Markdown.
-- Review the final diff before committing; commit only task-owned changes.
-
-## Commands
-
-No build, test, or lint tooling exists. Usual workflow: edit Markdown, verify links and privacy, review the diff, `git add` the intended files, and commit with a concise conventional message (`feat:` / `docs:`). Push to `origin/main` only when explicitly authorized by the user; this workflow alone does not authorize remote mutations.
+## Workflow & Authorization
+- No build, test, or lint tooling exists. Edit Markdown → verify links and privacy → review diff → stage explicit files → commit with conventional prefix (`feat:` / `docs:`).
+- Pushing to `origin/main` or any remote mutation requires explicit user authorization; this workflow alone grants none.
