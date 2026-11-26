@@ -168,7 +168,7 @@ All four files under `agent-rules/` enforce the same core engineering principles
 | Variant | File | Typical Location | Footprint & Adaptation |
 | --- | --- | --- | --- |
 | **Universal** *(Reference Blueprint)* | [universal-coding-agent-global-rules.md](agent-rules/universal-coding-agent-global-rules.md) | Any coding agent's global prompt | 52 lines · Tool-agnostic core with completeness sweep, mechanical-check ratchet, external API/version verification, and 2-round review cap; omits specific browser-automation tools |
-| **Codex** | [codex-global-rules.md](agent-rules/codex-global-rules.md) | `~/.codex/AGENTS.md` | 53 lines · Universal core + `ego-browser` vs. `playwright` browser-automation routing |
+| **Codex** | [codex-global-rules.md](agent-rules/codex-global-rules.md) | `~/.codex/AGENTS.md` | 33 lines · Multi-repository audits and browser-automation routing |
 | **Claude Code** | [claude-code-global-rules.md](agent-rules/claude-code-global-rules.md) | `~/.claude/CLAUDE.md` | 32 lines · Slimmed core + browser routing + Claude-specific anti-pause execution, plain-language UI copy, and on-demand `project-closeout` skill pointer |
 | **Antigravity (Gemini)** | [antigravity-global-rules.md](agent-rules/antigravity-global-rules.md) | `~/.gemini/config/GEMINI.md` | 30 lines · Compact Gemini-oriented wording with anti-hallucination (`[推测]`), anti-sycophancy, external API/version verification, completeness sweep, mechanical checks, on-demand `project-closeout` skill pointer, and browser routing |
 
@@ -184,7 +184,7 @@ Navigation and explanations are in English. Prompts are presented in their origi
 
 ### Codex Global Rules
 
-**Use when:** a Codex session needs stable expectations around scope, edits, testing, browser-automation routing, and external actions. It pairs the universal engineering core (premise checks, coupled-location sweeps, mechanical checks, external API/version verification, and 2-round review caps) with `ego-browser` vs. `playwright` routing.
+**Use when:** a Codex session needs stable expectations around scope, edits, testing, browser-automation routing, and external actions. It includes first-report coverage for multi-repository audits and routes browser work between `ego-browser` and `playwright`.
 
 **Read:** [English source](agent-rules/codex-global-rules.md)
 
