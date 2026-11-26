@@ -10,5 +10,4 @@ AI-Prompt-Protocols is a plain-Markdown library of self-contained prompts, codin
 - **Privacy hard rule**: never commit local machine paths (e.g. absolute Windows paths), personal knowledge-vault paths, or credentials. Verify all relative links before committing.
 
 ## Workflow & Authorization
-- No build, test, or lint tooling exists. Edit Markdown → verify links and privacy → review diff → stage explicit files → commit with conventional prefix (`feat:` / `docs:`).
-- Pushing to `origin/main` or any remote mutation requires explicit user authorization; this workflow alone grants none.
+- No build, test, or lint tooling exists. Edit Markdown → verify links and privacy → review diff → commit with conventional prefix (`feat:` / `docs:`).
